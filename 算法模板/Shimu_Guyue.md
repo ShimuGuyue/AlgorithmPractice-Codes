@@ -196,19 +196,17 @@ int Catalan(int n)
 }
 ```
 
-## 高精度运算
+## 高精度运算 （逆序）（非负数）
 
 ### 高精度 + 高精度
 
 ```c++
-/*非负数*/
-
 // 以字符串形式输入
 std::string a_s;
 std::string b_s;
 std::cin >> a_s;
 std::cin >> b_s;
-// 转换成数组形式存储
+// 转换成数组形式倒序存储
 std::vector<int> a;
 std::vector<int> b;
 for (int i(1); i <= a_s.size(); ++i)
@@ -221,7 +219,7 @@ for (int i(1); i <= b_s.size(); ++i)
 }
 // 高精度相加
 std::vector<int> ans(a + b);
-// 输出
+// 倒序输出
 for (int i(1); i <= ans.size(); ++i)
 {
     std::cout << ans[ans.size() - i];
@@ -261,14 +259,12 @@ std::vector<int> operator+(std::vector<int>& a, std::vector<int>& b)
 ### 高精度 * 低精度
 
 ```c++
-/*非负数*/
-
 // 分别以字符串形式和整数形式输入
 std::string a_s;
 std::cin >> a_s;
 int b;
 std::cin >> b;
-// 转换成数组形式存储
+// 转换成数组形式倒序存储
 std::vector<int> a;
 for (int i(1); i <= a_s.size(); ++i)
 {
@@ -276,7 +272,7 @@ for (int i(1); i <= a_s.size(); ++i)
 }
 // 高精度相乘
 std::vector<int> ans(a * b);
-// 输出
+// 倒序输出
 for (int i(1); i <= ans.size(); ++i)
 {
     std::cout << ans[ans.size() - i];
@@ -313,14 +309,12 @@ std::vector<int> operator*(std::vector<int>& a, int b)
 ### 高精度 * 高精度
 
 ```c++
-/*非负数*/
-
 // 以字符串形式输入
 std::string a_s;
 std::string b_s;
 std::cin >> a_s;
 std::cin >> b_s;
-// 转换成数组形式存储
+// 转换成数组形式倒序存储
 std::vector<int> a;
 std::vector<int> b;
 for (int i(1); i <= a_s.size(); ++i)
@@ -333,14 +327,14 @@ for (int i(1); i <= b_s.size(); ++i)
 }
 // 高精度相乘
 std::vector<int> ans(a * b);
-// 输出
+// 倒序输出
 for (int i(1); i <= ans.size(); ++i)
 {
     std::cout << ans[ans.size() - i];
 }
 std::cout << std::endl;
 
-/*----------*/
+/*--------------------------------------------------*/
 // 重载 * 运算符
 std::vector<int> operator*(std::vector<int> &a, std::vector<int> &b)
 {
@@ -372,6 +366,75 @@ std::vector<int> operator*(std::vector<int> &a, std::vector<int> &b)
         ans.pop_back();
     }
     return ans;
+}
+```
+
+### 高精度 / 低精度
+
+```c++
+// 分别以字符串形式和整数形式输入
+std::string a_s;
+std::cin >> a_s;
+int b;
+std::cin >> b;
+// 转换成数组形式倒序存储
+std::vector<int> a;
+for (int i(1); i <= a_s.size(); ++i)
+{
+    a.push_back(a_s[a_s.size() - i] - '0');
+}
+// 高精度相除
+std::vector<int> ans(a / b);
+// 倒序输出
+for (int i(1); i <= ans.size(); ++i)
+{
+    std::cout << ans[ans.size() - i];
+}
+std::cout << std::endl;
+
+/*--------------------------------------------------*/
+// 重载 / 运算符
+std::vector<int> operator/(std::vector<int>& a, int b)
+{
+    // 答案数组无需预设大小
+    std::vector<int> ans;
+    // 逐位相除
+    bool ok(false); // 答案不包含前导 0
+    int temp(0);
+    for (int i(a.size() - 1); i >= 0; --i)
+    {
+        temp = temp * 10 + a[i];
+        if (temp >= b)
+            ok = true;
+        if (ok)
+        {
+            ans.push_back(temp / b);
+            temp %= b;
+        }
+    }
+    if (ans.empty())
+        ans.push_back(0);
+    return std::vector<int>(ans.rbegin(), ans.rend());
+}
+```
+
+### 高精度比较大小
+
+```c++
+// 重载 > 运算符
+bool operator>(std::vector<int>& a, std::vector<int>& b)
+{
+    if (a.size() != b.size())
+        return a.size() > b.size();
+    int n(a.size());
+    for (int i(n - 1); i >= 0; --i)
+    {
+        if (a[i] > b[i])
+            return true;
+        else if (a[i] < b[i])
+            return false;
+    }
+    return false;
 }
 ```
 
