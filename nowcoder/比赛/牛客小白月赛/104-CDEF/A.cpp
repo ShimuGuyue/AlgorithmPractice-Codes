@@ -23,5 +23,16 @@ int main(void)
 
 void solve::Solve(void)
 {
-    
+    int n, x, y, z, t;
+	std::cin >> n >> x >> y >> z >> t;
+	int ans(x + y);
+	int sum(z + t);
+	while (n--)
+	{
+		int a, b, c;
+		std::cin >> a >> b >> c;
+		if (a + b > ans && c <= sum)
+			ans = a + b;
+	}
+	std::cout << ans << std::endl;
 }

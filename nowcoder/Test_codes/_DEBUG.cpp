@@ -1,24 +1,29 @@
-#include <stdio.h>
-int main()
+#include <iostream>
+
+namespace solve
 {
-    int N;
-    scanf("%d", &N);
-    for (int i = N - 1; i >= 1; i--)
-    {
-        if (i <= 2)
-        {
-            printf("%d", i);
-            break;
-        }
-        for (int j = 2; j < i; j++)
-        {
-            if (i % j == 0)
-                break;
-            if (j == i - 1)
-            {
-                printf("%d ", i);
-            }
-        }
-    }
-    return 0;
+	void Solve(void);
+}
+
+int main(void)
+{
+#ifndef ONLINE_JUDGE
+	freopen(".in.in"  , "r", stdin );
+	freopen(".out.out", "w", stdout);
+#endif
+	int t(1);
+	//std::cin >> t;
+	while (t--)
+	{
+		solve::Solve();
+		//std::cout << std::endl;
+	}
+	return 0;
+}
+
+void solve::Solve(void)
+{
+    int a, b;
+    std::cin >> a >> b;
+    std::cout << a + b;
 }
