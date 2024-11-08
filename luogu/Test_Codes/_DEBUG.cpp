@@ -1,39 +1,26 @@
 #include <iostream>
 #include <vector>
-#include <set>
-#include <algorithm>
-
-int Binary_Search(std::vector<int64_t>& as, int x);
+#include <map>
 
 int main(void)
 {
-    std::multiset<int> a;
-    a.insert(10);
-    a.insert(30);
-    a.insert(40);
-    a.insert(50);
-    a.insert(60);
-    a.insert(60);
-    a.insert(20);
-    a.insert(80);
-    std::cout << *(--a.end());
-    // for (int i : a)
-    // {
-    //     std::cout << i << " ";
-    // }
-    return 0;
-}
-
-int Binary_Search(std::vector<int64_t>& as, int x)
-{
-    int l(0), r(as.size()-1);
-    while (l < r)
+    int n;
+    std::cin >> n;
+    std::vector<int> a(n);
+    for (int i(0); i < n; ++i)
     {
-        int mid((l + r + 1) / 2);
-        if (as[mid] < x)
-            l = mid;
-        else // as[mid] >= x
-            r = mid - 1;
+        std::cin >> a[i];
     }
-    return l;
+    int64_t ans(0);
+    for (int i(0); i < n; ++i)
+    {
+        std::map<int, int> cnt;
+        for (int j(i); j < n; ++j)
+        {
+            ++cnt[a[j]];
+            ans += cnt.size();
+        }
+    }
+    std::cout << ans << std::endl;
+    return 0;
 }
