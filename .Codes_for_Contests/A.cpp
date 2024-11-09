@@ -1,9 +1,6 @@
 #include <iostream>
 
-namespace solve
-{
-	void Solve(void);
-}
+void Solve(void);
 
 int main(void)
 {
@@ -16,13 +13,13 @@ int main(void)
 	//std::cin >> t;
 	while (t--)
 	{
-		solve::Solve();
+		Solve();
 		//std::cout << std::endl;
 	}
 	return 0;
 }
 
-void solve::Solve(void)
+void Solve(void)
 {
     
 }
