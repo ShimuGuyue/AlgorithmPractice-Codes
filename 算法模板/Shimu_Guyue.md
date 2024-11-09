@@ -443,7 +443,7 @@ bool operator>(std::vector<int>& a, std::vector<int>& b)
 ### 二分查找（升序）
 
 ```c++
-int Binary_Search(std::vector<int>& as, int x, int l, int r)
+int Binary_Search(std::vector<int>& as, int l, int r)
 {
     while (l < r)
     {
