@@ -443,39 +443,17 @@ bool operator>(std::vector<int>& a, std::vector<int>& b)
 ### 二分查找（升序）
 
 ```c++
-/*无重复*/
-int Binary_Search(std::vector<int>& as, int x)
+int Binary_Search(std::vector<int>& as, int x, int l, int r)
 {
-    int l(0), r(as.size()-1);
     while (l < r)
     {
         int mid((l + r) / 2);
-        if (as[mid] < x)
+        if (Check(/**/))
             l = mid + 1;
-        else // as[mid] >= x
+        else
             r = mid;
     }
-    return as[l] == x ? l : -1;
-}
-/*有重复，查找第一次出现的位置*/
-int Binary_Search(std::vector<int>& as, int x)
-{
-    int l(0), r(as.size()-1);
-    while (l < r)
-    {
-        int mid((l + r) / 2);
-        if (as[mid] < x)
-            l = mid + 1;
-        else // as[mid] >= x
-            r = mid;
-    }
-    if (as[l] != x)
-        return -1;
-   	while (l > 0 && as[l - 1] == x)
-    {
-        --l;
-    }
-    return l + 1;
+    return l - 1;
 }
 ```
 
