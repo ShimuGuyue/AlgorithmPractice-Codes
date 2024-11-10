@@ -1,26 +1,19 @@
 #include <iostream>
 #include <vector>
-#include <map>
 
 int main(void)
 {
-    int n;
-    std::cin >> n;
-    std::vector<int> a(n);
-    for (int i(0); i < n; ++i)
+    int64_t sum(0);
+    std::vector<int64_t> a(31);
+    a[0] = 1;
+    a[1] = 2;
+    a[2] = 3;
+    sum += a[0] + a[1] + a[2];
+    for (int i(3); i <= 30; ++i)
     {
-        std::cin >> a[i];
+        a[i] = a[i-1] + 2 * a[i-2] + 5 * a[i-3];
+        sum += a[i];
     }
-    int64_t ans(0);
-    for (int i(0); i < n; ++i)
-    {
-        std::map<int, int> cnt;
-        for (int j(i); j < n; ++j)
-        {
-            ++cnt[a[j]];
-            ans += cnt.size();
-        }
-    }
-    std::cout << ans << std::endl;
+    std::cout << sum << std::endl;
     return 0;
 }
