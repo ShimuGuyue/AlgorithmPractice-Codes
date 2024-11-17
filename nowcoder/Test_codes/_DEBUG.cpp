@@ -1,16 +1,30 @@
 #include <iostream>
-#include <string>
-#include <ctime>
 using namespace std;
+long sum(int n)
+{
+	if (n == 1 || n == 2)
+	{
+		return 1;
+	}
+	else
+	{
+		return sum(n - 1) + sum(n - 2);
+	}
+}
 
 int main()
 {
-	srand(time(0));
-	for (int i(1); i < 10; ++i)
+	long a;
+	cin >> a;
+	long arr[a];
+	long zo = 0;
+	for (long i = 0; i < a; i++)
 	{
-		std::cout << rand() % 10 + 1 << " " << rand() % 10 + 1 << std::endl;
+		cin >> arr[i];
+		long k = arr[i];
+		zo += sum(k);
 	}
-	
 
-	return 0;
+	cout << zo << endl;
+	system("pause");
 }
