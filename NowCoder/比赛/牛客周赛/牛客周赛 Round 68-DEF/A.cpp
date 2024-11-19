@@ -21,5 +21,15 @@ int main(void)
 
 void Solve(void)
 {
-    
+    int n;
+    std::cin >> n;
+    int ans(0);
+    char c;
+    while (n--)
+    {
+        std::cin >> c;
+        if (c == '0')
+            ++ans;
+    }
+    std::cout << ans << std::endl;
 }
