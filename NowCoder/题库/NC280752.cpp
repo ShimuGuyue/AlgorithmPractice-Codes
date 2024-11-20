@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 
 void Solve(void);
 
@@ -26,5 +26,18 @@ int main(void)
 
 void Solve(void)
 {
-    
+    int x;
+	std::cin >> x;
+	if (x)
+	{
+		std::cout << x << " " << 1 << " " << 1 << std::endl;
+		std::cout << 1 << " " << 2 << " " << 3 << std::endl;
+		std::cout << 1 << " " << 1 << " " << 2 << std::endl;
+	}
+	else
+	{
+		std::cout << 1 << " " << 1 << " " << 1 << std::endl;
+		std::cout << 1 << " " << 1 << " " << 1 << std::endl;
+		std::cout << 1 << " " << 1 << " " << 1 << std::endl;
+	}
 }
