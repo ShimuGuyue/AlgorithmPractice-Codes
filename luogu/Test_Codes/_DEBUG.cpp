@@ -1,19 +1,38 @@
-#include <iostream>
-#include <vector>
+#include<iostream>
 
-int main(void)
+struct a
 {
-    int64_t sum(0);
-    std::vector<int64_t> a(31);
-    a[0] = 1;
-    a[1] = 2;
-    a[2] = 3;
-    sum += a[0] + a[1] + a[2];
-    for (int i(3); i <= 30; ++i)
-    {
-        a[i] = a[i-1] + 2 * a[i-2] + 5 * a[i-3];
-        sum += a[i];
-    }
-    std::cout << sum << std::endl;
+    int x;
+    int y;
+    int z;
+};
+
+struct b
+{
+    a* p;
+    a* q;
+};
+
+struct c
+{
+    b* n;
+    b* m;
+};
+
+
+
+int main()
+{
+    c* bala;
+    std::cin >> bala->n->p->x;
+    std::cin >> bala->n->p->y;
+    std::cin >> bala->n->p->z;
+
+    std::cin >> bala->n->q->x;
+    std::cin >> bala->n->q->y;
+    std::cin >> bala->n->q->z;
+    
+    std::cin >> bala->m->p->x;
+    /*......*/
     return 0;
 }
