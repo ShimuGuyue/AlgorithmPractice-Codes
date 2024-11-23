@@ -1,38 +1,30 @@
-#include<iostream>
-
-struct a
+#include <stdio.h>
+int k;
+int n;
+void f(int n, int a[])
 {
-    int x;
-    int y;
-    int z;
-};
-
-struct b
-{
-    a* p;
-    a* q;
-};
-
-struct c
-{
-    b* n;
-    b* m;
-};
-
-
-
+    int find = 0;
+    for (int i = 0; i < n; i++)
+    {
+        int sum = 0;
+        for (int j = i; j < n; j++)
+        {
+            sum += a[j];
+            if (sum == k)
+                find = 1;
+        }
+    }
+    if (find == 1)
+        printf("yes");
+    else
+        printf("no");
+}
 int main()
 {
-    c* bala;
-    std::cin >> bala->n->p->x;
-    std::cin >> bala->n->p->y;
-    std::cin >> bala->n->p->z;
-
-    std::cin >> bala->n->q->x;
-    std::cin >> bala->n->q->y;
-    std::cin >> bala->n->q->z;
-    
-    std::cin >> bala->m->p->x;
-    /*......*/
+    scanf("%d%d", &n, &k);
+    int a[n];
+    for (int i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+    f(n, a);
     return 0;
 }

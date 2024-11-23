@@ -1,4 +1,3 @@
-// 打表得结论，很快啊
 #include <iostream>
 
 void solve(void);

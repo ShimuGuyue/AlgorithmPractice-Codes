@@ -1,4 +1,3 @@
-// 最小的三角形
 #include <iostream>
 #include <map>
 

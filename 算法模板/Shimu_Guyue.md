@@ -169,15 +169,15 @@ int Lucas(int n, int m)
 #### 全排列
 
 ```c++
-#include <algorithm>
 #include <vector>
+#include <algorithm>
 
 std::vector<int> vi;
 
 // 下一个字典序排列
-std::next_permutation(vi.begin(), vi.end()); 
+std::next_permutation(vi.begin(), vi.end()); -> bool
 // 上一个字典序排列
-std::prev_permutation(vi.begin(), vi.end());
+std::prev_permutation(vi.begin(), vi.end()); -> bool
 ```
 
 ### Catalan 数列
@@ -517,3 +517,66 @@ for (int i(0); i < n; ++i)
     }
 }
 ```
+
+### 求连通块数量
+
+```c++
+/*求 (l1, l1) ~ (l2, r2) 有多少连通块*/
+/* ' ' 表示连通，'x'表示不连通*/
+
+struct point
+{
+	int x;
+	int y;
+};
+
+void Bfs(std::vector<std::vector<char>>& grid, int x, int y, int l1, int l2, int r1, int r2,
+         std::vector<Point>& points, bool& add)
+{
+	for (Point point : points)
+	{
+		if (point.x == x && point.y == y)
+			return;
+    }
+    
+	add = true;
+	points.push_back({ x, y });
+    
+    std::queue<Point> next_points;
+	if (x - 1 >= l1 && grid[x - 1][y] == ' ')
+		next_points.push({ x - 1, y });
+	if (x + 1 <= r1 && grid[x + 1][y] == ' ')
+		next_points.push({ x + 1, y });
+	if (y - 1 >= l2 && grid[x][y - 1] == ' ')
+		next_points.push({ x, y - 1 });
+	if (y + 1 <= r2 && grid[x][y + 1] == ' ')
+		next_points.push({ x, y + 1 });
+	while (!next_points.empty())
+	{
+		Point p = next_points.front();
+		next_points.pop();
+		Bfs(grid, p.x, p.y, l1, l2, r1, r2, points, add);
+	}
+}
+
+int Conut_ConnectedBlock(std::vector<std::vector<char>>& grid, int l1, int l2, int r1, int r2)
+{
+    int ans(0);
+    std::vector<Point>  points;
+    for (int i(l1); i<= r1; ++i)
+    {
+		for (int j(l2); j <= r2; ++j)
+        {
+            if (grid[i][j] == 'x')
+                continue;
+            
+            bool add(false);
+            Bfs(grid, i, j, l1, l2, points, add);
+            if (add)
+                ++ans;
+        }
+    }
+    return ans;
+}
+```
+

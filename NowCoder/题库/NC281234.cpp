@@ -1,4 +1,3 @@
-// 一共就那么些限制条件
 #include <iostream>
 
 void solve(void);
