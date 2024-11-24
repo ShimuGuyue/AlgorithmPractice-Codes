@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 
 void Solve(void);
 
@@ -15,7 +15,7 @@ int main(void)
     std::cin.tie(NULL); std::cout.tie(NULL);
 
     int t(1);
-	//std::cin >> t;
+	std::cin >> t;
 	while (t--)
 	{
 		Solve();
@@ -26,9 +26,32 @@ int main(void)
 
 void Solve(void)
 {
-    int a1, b1;
-    std::cin >> a1 >> b1;
-    int a2, b2;
-    std::cin >> a2 >> b2;
-    std::cout << (a2 * b2 <= a1 * b1 ? "gzy" : "lz") << std::endl;   
+    std::string s;
+	std::string t;
+	std::cin >> s;
+	std::cin >> t;
+	
+	int i(0), j(0);
+	while (i < s.size() && j < t.size())
+	{
+		if (s[i] == t[j] || s[i] == '?')
+		{
+			s[i] = t[j];
+			++j;
+		}
+		++i;
+	}
+
+	if (j != t.size())
+	{
+		std::cout << "NO" << std::endl;
+		return;
+	}
+	std::cout << "YES" << std::endl;
+	for (char& c : s)
+	{
+		if (c == '?')
+			c = 'a';
+	}
+	std::cout << s << std::endl;
 }

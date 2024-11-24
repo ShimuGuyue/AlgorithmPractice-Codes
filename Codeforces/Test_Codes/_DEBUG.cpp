@@ -26,5 +26,8 @@ int main(void)
 
 void Solve(void)
 {
-    
+    for (int i(1); i <= 200000; i *= 3)
+	{
+		std::cout << i << ", ";
+	}
 }

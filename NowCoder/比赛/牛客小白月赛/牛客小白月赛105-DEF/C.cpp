@@ -1,6 +1,5 @@
 ﻿#include <iostream>
 #include <vector>
-#include <queue>
 
 struct Point
 {
@@ -8,7 +7,7 @@ struct Point
 	int y;
 };
 
-void Bfs(std::vector<std::vector<char>>& grid, int x, int y, int l1, int l2, int r1, int r2, std::vector<Point>& points, bool& add);
+void Dfs(std::vector<std::vector<char>>& grid, int x, int y, int l1, int l2, int r1, int r2, std::vector<Point>& points, bool& add);
 void Solve(void);
 
 int main(void)
@@ -71,7 +70,7 @@ void Solve(void)
 						continue;
 
 					bool add = false;
-					Bfs(grid, p, q, l1, l2, r1, r2, points, add);
+					Dfs(grid, p, q, l1, l2, r1, r2, points, add);
 					if (add)
 						++count_before;
 				}
@@ -86,7 +85,7 @@ void Solve(void)
 					if (grid[p][q] == 'x')
 						continue;				
 					bool add = false;
-					Bfs(grid, p, q, l1, l2, r1, r2, points, add);
+					Dfs(grid, p, q, l1, l2, r1, r2, points, add);
 					if (add)
 						++count_after;
 				}
@@ -101,7 +100,7 @@ void Solve(void)
 	std::cout << ans << std::endl;
 }
 
-void Bfs(std::vector<std::vector<char>>& grid, int x, int y, int l1, int l2, int r1, int r2, std::vector<Point>& points, bool& add)
+void Dfs(std::vector<std::vector<char>>& grid, int x, int y, int l1, int l2, int r1, int r2, std::vector<Point>& points, bool& add)
 {
 	for (Point p : points)
 	{
@@ -113,19 +112,12 @@ void Bfs(std::vector<std::vector<char>>& grid, int x, int y, int l1, int l2, int
 
 	points.push_back({ x, y });
 
-	std::queue<Point> next_points;
 	if (x - 1 >= l1 && grid[x - 1][y] == '.')
-		next_points.push({ x - 1, y });
+		Dfs(grid, x - 1, y, l1, l2, r1, r2, points, add);
 	if (x + 1 <= r1 && grid[x + 1][y] == '.')
-		next_points.push({ x + 1, y });
+		Dfs(grid, x + 1, y, l1, l2, r1, r2, points, add);
 	if (y - 1 >= l2 && grid[x][y - 1] == '.')
-		next_points.push({ x, y - 1 });
+		Dfs(grid, x, y - 1, l1, l2, r1, r2, points, add);
 	if (y + 1 <= r2 && grid[x][y + 1] == '.')
-		next_points.push({ x, y + 1 });
-	while (!next_points.empty())
-	{
-		Point p = next_points.front();
-		next_points.pop();
-		Bfs(grid, p.x, p.y, l1, l2, r1, r2, points, add);
-	}
+		Dfs(grid, x, y + 1, l1, l2, r1, r2, points, add);
 }
