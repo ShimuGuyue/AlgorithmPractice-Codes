@@ -440,21 +440,23 @@ bool operator>(std::vector<int>& a, std::vector<int>& b)
 
 ## 搜索
 
-### 二分查找（升序）
+### 二分查找* 升序 */
+
+#### 库函数
 
 ```c++
-int Binary_Search(std::vector<int>& as, int l, int r)
-{
-    while (l < r)
-    {
-        int mid((l + r) / 2);
-        if (Check(/**/))
-            l = mid + 1;
-        else
-            r = mid;
-    }
-    return l - 1;
-}
+#include <algorithm>
+
+/* 升序 */
+// 第一个大于 cmp_ele 的元素的位置
+std::upper_bound(v.begin(), v.end(), cmp_ele) -> iterator
+// 第一个大于等于 cmp_ele 的元素的位置
+std::lower_bound(v.begin(), v.end(), cmp_ele) -> iterator
+
+/* 有序 */
+// 第一个符合 cmp 比较规则的元素 pos_ele 的位置
+bool cmp(cmp_ele, pos_ele);
+std::upper_bound(v.begin(), v.end(), cmp_ele, cmp) -> iterator
 ```
 
 ## 动态规划 DP
@@ -538,10 +540,10 @@ void Dfs(std::vector<std::vector<char>>& grid, int x, int y, int l1, int l2, int
 		if (point.x == x && point.y == y)
 			return;
     }
-    
+  
 	add = true;
 	points.push_back({ x, y });
-    
+  
 	if (x - 1 >= l1 && grid[x - 1][y] == ' ')
 		Dfs(grid, x - 1, y, l1, l2, r1, r2, points, add);
 	if (x + 1 <= r1 && grid[x + 1][y] == ' ')
@@ -562,7 +564,7 @@ int Conut_ConnectedBlock(std::vector<std::vector<char>>& grid, int l1, int l2, i
         {
             if (grid[i][j] == 'x')
                 continue;
-            
+    
             bool add(false);
             Dfs(grid, i, j, l1, l2, points, add);
             if (add)
@@ -572,4 +574,3 @@ int Conut_ConnectedBlock(std::vector<std::vector<char>>& grid, int l1, int l2, i
     return ans;
 }
 ```
-
