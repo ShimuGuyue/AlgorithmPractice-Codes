@@ -26,4 +26,8 @@ int main(void)
 
 void Solve(void)
 {
+    int64_t a, b, c;
+	char ch;
+	std::cin >> a >> ch >> b >> ch >> ch >> ch >> ch >> ch >> c;
+	std::cout << c - b - 1 << std::endl;
 }

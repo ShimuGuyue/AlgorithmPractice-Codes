@@ -26,4 +26,7 @@ int main(void)
 
 void Solve(void)
 {
+    int a, b;
+	std::cin >> a >> b;
+	std::cout << b + (b - a) << std::endl;
 }

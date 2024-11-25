@@ -440,7 +440,11 @@ bool operator>(std::vector<int>& a, std::vector<int>& b)
 
 ## 搜索
 
-### 二分查找* 升序 */
+### 二分查找
+
+```cpp
+
+```
 
 #### 库函数
 
@@ -564,7 +568,7 @@ int Conut_ConnectedBlock(std::vector<std::vector<char>>& grid, int l1, int l2, i
         {
             if (grid[i][j] == 'x')
                 continue;
-    
+  
             bool add(false);
             Dfs(grid, i, j, l1, l2, points, add);
             if (add)

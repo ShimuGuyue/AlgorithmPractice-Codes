@@ -1,5 +1,6 @@
 #include <iostream>
 
+int64_t Gcd(int64_t a, int64_t b);
 void Solve(void);
 
 int main(void)
@@ -26,4 +27,22 @@ int main(void)
 
 void Solve(void)
 {
+    int64_t n, h;
+	std::cin >> n >> h;
+	while (n--)
+	{
+		int64_t x, y, z;
+		std::cin >> x >> y >> z;
+		int64_t a(x), b(y), c(h * 2 - z);
+		int64_t gcd(Gcd(Gcd(a, b), c));
+		a /= gcd; b /= gcd; c /= gcd;
+		std::cout << a << " " << b << " " << c << std::endl;
+	}
+}
+
+int64_t Gcd(int64_t a, int64_t b)
+{
+    if (a % b == 0)
+        return b;
+    return Gcd(b, a % b);
 }
