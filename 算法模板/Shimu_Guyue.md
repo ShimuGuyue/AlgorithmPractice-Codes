@@ -440,10 +440,42 @@ bool operator>(std::vector<int>& a, std::vector<int>& b)
 
 ## 搜索
 
-### 二分查找
+### 二分搜索（升序）
+
+#### [l, mid - 1] + [mid, r]
 
 ```cpp
+// 向右搜索
+int Binary_Search(int l, int r, int k)
+{
+    while (l < r)
+    {
+        int mid((l + r + 1) / 2);
+        if (Check(mid, k))
+            l = mid;
+        else
+            r = mid - 1;   
+    }
+    return l; 
+}
+```
 
+#### [l, mid] + [mid + 1, r]
+
+```cpp
+// 向左搜索
+int Binary_Search(int l, int r, int k)
+{
+    while (l < r)
+    {
+        int mid((l + r) / 2);
+        if (Check(mid, k))
+            r = mid;
+        else
+            l = mid + 1;   
+    }
+    return r; 
+}
 ```
 
 #### 库函数
@@ -461,6 +493,44 @@ std::lower_bound(v.begin(), v.end(), cmp_ele) -> iterator
 // 第一个符合 cmp 比较规则的元素 pos_ele 的位置
 bool cmp(cmp_ele, pos_ele);
 std::upper_bound(v.begin(), v.end(), cmp_ele, cmp) -> iterator
+```
+
+#### 三分
+
+```cpp
+/* 凸函数的极大值 */
+int Ternary_Search(int l, int r)
+{   
+    while (l < r)
+    {
+        int l1((l * 2 + r * 1) / 3);
+        int r1((l * 1 + r * 2) / 3);
+        if (F(l1) > F(r1))
+            r = r1 - 1;
+        else if (F(l1 < F(r1)))
+            l = l1 + 1;
+        else 
+            l = l1 + 1, r = r1 - 1; 
+    }
+    return std::max(F(l), F(r));
+}
+
+/* 凹函数的极小值 */
+int Ternary_Search(int l, int r)
+{   
+    while (l < r)
+    {
+        int l1((l * 2 + r * 1) / 3);
+        int r1((l * 1 + r * 2) / 3);
+        if (F(l1) < F(r1))
+            r = r1 - 1;
+        else if (F(l1 > F(r1)))
+            l = l1 + 1;
+        else 
+            l = l1 + 1, r = r1 - 1; 
+    }
+    return std::min(F(l), F(r));
+}
 ```
 
 ## 动态规划 DP
