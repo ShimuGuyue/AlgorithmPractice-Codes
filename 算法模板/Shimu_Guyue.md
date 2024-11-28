@@ -1,5 +1,8 @@
 # ---------------Shimu_Guyue---------------
 
+
+## 实用技巧
+
 ### DEV-C++编译指令
 
 ```c++
@@ -24,7 +27,7 @@ std::cin.tie(NULL); std::cout.tie(NULL);
 #pragma GCC optimize(2)
 ```
 
-#### 快读函数
+#### 模板函数
 
 ```c++
 /* getchar() 的速度快于关闭缓冲区的 std::cin.get()*/
@@ -57,6 +60,25 @@ inline void Write(int x)
         Write(x / 10);
     putchar(x % 10 + '0');
 }
+```
+
+## 堆
+
+### C++ 库 priority_queue<>
+
+```c++
+// 大根堆
+struct less
+{
+	_GLIBCXX14_CONSTEXPR // #define _GLIBCXX14_CONSTEXPR constexpr
+	bool
+	operator()(const _Tp &__x, const _Tp &__y) const
+	{
+		return __x < __y;
+	}
+};
+
+std::priority_queue<Type, std::vector<Type>, Less<Type>> less_q;
 ```
 
 ## 数论
@@ -478,21 +500,21 @@ int Binary_Search(int l, int r, int k)
 }
 ```
 
-#### 库函数
+#### C++ 库 upper_bound() 和 lower_bound()
 
 ```c++
 #include <algorithm>
 
 /* 升序 */
 // 第一个大于 cmp_ele 的元素的位置
-std::upper_bound(v.begin(), v.end(), cmp_ele) -> iterator
+std::upper_bound(v.begin(), v.end(), cmp_ele) // -> iterator
 // 第一个大于等于 cmp_ele 的元素的位置
-std::lower_bound(v.begin(), v.end(), cmp_ele) -> iterator
+std::lower_bound(v.begin(), v.end(), cmp_ele) // -> iterator
 
 /* 有序 */
 // 第一个符合 cmp 比较规则的元素 pos_ele 的位置
 bool cmp(cmp_ele, pos_ele);
-std::upper_bound(v.begin(), v.end(), cmp_ele, cmp) -> iterator
+std::upper_bound(v.begin(), v.end(), cmp_ele, cmp) // -> iterator
 ```
 
 #### 三分
@@ -606,8 +628,7 @@ struct point
 	int y;
 };
 
-void Dfs(std::vector<std::vector<char>>& grid, int x, int y, int l1, int l2, int r1, int r2,
-         std::vector<Point>& points, bool& add)
+void Dfs(std::vector<std::vector<char>>& grid, int x, int y, int l1, int l2, int r1, int r2, std::vector<Point>& points, bool& add)
 {
 	for (Point point : points)
 	{
