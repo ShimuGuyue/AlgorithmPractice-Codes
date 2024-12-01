@@ -1,30 +1,25 @@
-#include <iostream>
-
-void Solve(void);
-
-int main(void)
+#include <stdio.h>
+int main()
 {
-	#ifndef ONLINE_JUDGE
-	freopen(".in.in"  , "r", stdin );
-	freopen(".out.out", "w", stdout);
-	#endif
-
-    // 关闭输入输出缓存，使效率提升
-    std::ios::sync_with_stdio(false);
-    // 解除cin和cout的默认绑定，来降低IO的负担使效率提升
-    std::cin.tie(NULL); std::cout.tie(NULL);
-
-    int t(1);
-	//std::cin >> t;
-	while (t--)
+	int n;
+	scanf("%d", &n);
+	char a[9999];
+	int i = 0;
+	int flag = 0;
+	int b[2000];
+	scanf("%s", a);
+	while (a[i] != '\n')
 	{
-		Solve();
-		//std::cout << std::endl;
+		b[a[i]]++;
+		if (b[a[i]] == n)
+		{
+			printf("%c", a[i]);
+			flag = 1;
+			break;
+		}
+		i++;
 	}
-	return 0;
-}
-
-void Solve(void)
-{
-    
+	if (flag == 0)
+		printf("No");
+	printf("%d", flag);
 }

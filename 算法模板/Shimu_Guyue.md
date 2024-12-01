@@ -669,3 +669,26 @@ int Conut_ConnectedBlock(std::vector<std::vector<char>>& grid, int l1, int l2, i
     return ans;
 }
 ```
+
+## 图论
+
+### 最短路
+
+#### Floyd 算法
+
+```c++
+void Floyd(std::vector<std::vector<int>>& grid)
+{
+    int n(grid.size());
+    for (int k(0); k < n; ++k)
+    {
+	    for (int i(0); i < n; ++i)
+	    {
+		    for (int j(0); j < n; ++j)
+		    {
+		        a[i][j] = std::min(a[i][j], a[i][k] + a[k][j]);
+		    }
+	    }
+    }
+}
+```
