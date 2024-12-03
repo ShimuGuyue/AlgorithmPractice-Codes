@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 void Solve(void);
 
@@ -15,7 +16,7 @@ int main(void)
     std::cin.tie(NULL); std::cout.tie(NULL);
 
     int t(1);
-	//std::cin >> t;
+	std::cin >> t;
 	while (t--)
 	{
 		Solve();
@@ -26,5 +27,17 @@ int main(void)
 
 void Solve(void)
 {
-    
+    int n;
+	std::cin >> n;
+	int ans(0);
+	int sum(0);
+	for (int i(0); i < n; ++i)
+	{
+		int a;
+		std::cin >> a;
+		sum += a;
+		if ((sqrt(sum) == (int)sqrt(sum)) && ((int)sqrt(sum) % 2 == 1))
+			++ans;
+	}
+	std::cout << ans << std::endl;
 }
