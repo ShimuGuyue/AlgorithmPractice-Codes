@@ -1,7 +1,6 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include <queue>
 #include <cmath>
 #include <climits>
 
@@ -41,12 +40,15 @@ void Dfs(double x, double y, double sum, std::vector<int> flags)
         if (flags[i])
             continue;
 
+        is_end = false;
+
         double len(sqrt(pow(x - locs[i].x, 2) + pow(y - locs[i].y, 2)));
+        if (sum + len >= ans)
+            continue;
+
         flags[i] = 1;
         Dfs(locs[i].x, locs[i].y, sum + len, flags);
         flags[i] = 0;
-
-        is_end = false;
     }
 
     if (is_end)
