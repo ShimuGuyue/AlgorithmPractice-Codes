@@ -29,4 +29,9 @@ int main(void)
 
 void Solve(void)
 {
+	int n(10);
+	std::cout << (1 << n) << std::endl;
+	std::cout << (1 << n + 1) << std::endl;
+	std::cout << (1 << (n + 1)) << std::endl;
+	std::cout << ((1 << n) + 1) << std::endl;
 }
