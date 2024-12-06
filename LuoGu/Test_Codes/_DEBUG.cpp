@@ -29,7 +29,5 @@ int main(void)
 
 void Solve(void)
 {
-	std::string s("Hello, World!");
-	s.erase(0, 5);
-	std::cout << s << std::endl;
+
 }
