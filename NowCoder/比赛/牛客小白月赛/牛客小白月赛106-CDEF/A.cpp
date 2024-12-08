@@ -8,7 +8,7 @@ int main(void)
 	freopen(".in.in"  , "r", stdin );
 	freopen(".out.out", "w", stdout);
 	#endif
-	
+
     std::ios::sync_with_stdio(false);
     std::cin.tie(NULL); std::cout.tie(NULL);
 
@@ -24,5 +24,17 @@ int main(void)
 
 void Solve(void)
 {
-    
+    int a, b, c, d;
+    std::cin >> a >> b >> c >> d;
+    int flag;
+    if (b == 0)
+        flag = 1;
+    else 
+        flag = a % 2;
+    flag *= c % 2;
+    flag += d;
+    if (flag & 1)
+        std::cout << "YES" << std::endl;
+    else
+        std::cout << "NO" << std::endl;
 }
