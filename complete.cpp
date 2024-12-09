@@ -8,7 +8,7 @@ int main(void)
 	freopen(".in.in"  , "r", stdin );
 	freopen(".out.out", "w", stdout);
 	#endif
-	
+		
     std::ios::sync_with_stdio(false);
     std::cin.tie(NULL); std::cout.tie(NULL);
 
