@@ -4,7 +4,7 @@ void Solve(void);
 
 int main(void)
 {
-	#ifndef ONLINE_JUDGE
+	#ifdef HYS
 	freopen(".in.in"  , "r", stdin );
 	freopen(".out.out", "w", stdout);
 	#endif
@@ -24,5 +24,5 @@ int main(void)
 
 void Solve(void)
 {
-    
+
 }
