@@ -3,7 +3,6 @@
 
 int n;
 std::vector<std::string> words;
-std::vector<std::vector<int>> both_lens;
 std::vector<int> flags;
 int ans;
 
@@ -39,25 +38,6 @@ void Solve(void)
     for (int i(0); i < n; ++i)
     {
         std::cin >> words[i];
-    }
-    // std::vector<std::vector<int>> both_lens(n, std::vector<int>(n));
-    both_lens = std::vector<std::vector<int>>(n, std::vector<int>(n));
-    for (int i(0); i < n; ++i)
-    {
-        for (int j(0); j < n; ++j)
-        {
-            int len(std::min(words[i].size(), words[j].size()));
-            for (int k(1); k <= len; ++k)
-            {
-                std::string tail(words[i].end() - k, words[i].end());
-                std::string head(words[j].begin(), words[j].begin() + k);
-                if (tail == head)
-                {
-                    both_lens[i][j] = k;
-                    break;
-                }
-            }
-        }
     }
     std::string c;
     std::cin >> c;
