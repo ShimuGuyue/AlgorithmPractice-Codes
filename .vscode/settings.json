@@ -1,5 +1,9 @@
 {
-    "files.associations": {
+    "C_Cpp.errorSquiggles": "enabled",
+    "files.associations": 
+    {
+        "iostream": "cpp",
+        "ostream": "cpp",
         "array": "cpp",
         "atomic": "cpp",
         "*.tcc": "cpp",
@@ -56,12 +60,10 @@
         "initializer_list": "cpp",
         "iomanip": "cpp",
         "iosfwd": "cpp",
-        "iostream": "cpp",
         "istream": "cpp",
         "limits": "cpp",
         "mutex": "cpp",
         "new": "cpp",
-        "ostream": "cpp",
         "scoped_allocator": "cpp",
         "shared_mutex": "cpp",
         "sstream": "cpp",
@@ -70,7 +72,6 @@
         "thread": "cpp",
         "typeindex": "cpp",
         "typeinfo": "cpp",
-        "valarray": "cpp",
-        "hys": "cpp"
+        "valarray": "cpp"
     }
 }
