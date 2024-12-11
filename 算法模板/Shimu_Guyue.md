@@ -464,23 +464,38 @@ bool operator>(std::vector<int>& a, std::vector<int>& b)
 
 ### 字符串拼接
 
-#### 字符串接龙，首尾重复子串仅保留一个
+```c++
+// 字符串接龙，首尾重复子串仅保留一个
+// 首尾无重复不连接
+void Link(std::string& s, std::string& t)
+{
+    int len(std::min(s.size(), t.size()));
+
+    for (int i(1); i <= len; ++i)
+    {
+        std::string tail(s.end() - i, s.end());
+        std::string head(t.begin(), t.begin() + i);
+        if (tail == head)
+        {
+            s += std::string(t.begin() + i, t.end());
+            break;
+        }
+    }
+}
+
+```
+
+### 字符串替换
 
 ```c++
-std::string s;
-std::string t;
-
-int len(std::min(s.size(), t.size()));
-
-for (int i(1); i <= len; ++i)
+// 将字符串 s 中的所有字串 t 替换为 r
+int k(s.find(t));
+while (k != std::string::npos)
 {
-    std::string tail(s.end() - i, s.end());
-    std::string head(t.begin(), t.begin() + i);
-    if (tail == head)
-    {
-        s += std::string(words[i].begin() + i, words[i].end());
-        break;
-    }
+	std::string temp(s);
+	temp.replace(k, t.size(), r);
+    // Func(temp);
+	k = s.find(t, k + 1);
 }
 ```
 
