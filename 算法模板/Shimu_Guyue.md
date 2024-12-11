@@ -460,13 +460,37 @@ bool operator>(std::vector<int>& a, std::vector<int>& b)
 }
 ```
 
+## 字符串
+
+### 字符串拼接
+
+#### 字符串接龙，首尾重复子串仅保留一个
+
+```c++
+std::string s;
+std::string t;
+
+int len(std::min(s.size(), t.size()));
+
+for (int i(1); i <= len; ++i)
+{
+    std::string tail(s.end() - i, s.end());
+    std::string head(t.begin(), t.begin() + i);
+    if (tail == head)
+    {
+        s += std::string(words[i].begin() + i, words[i].end());
+        break;
+    }
+}
+```
+
 ## 搜索
 
 ### 二分搜索（升序）
 
 #### [l, mid - 1] + [mid, r]
 
-```cpp
+```c++
 // 向右搜索
 int Binary_Search(int l, int r, int k)
 {
@@ -484,7 +508,7 @@ int Binary_Search(int l, int r, int k)
 
 #### [l, mid] + [mid + 1, r]
 
-```cpp
+```c++
 // 向左搜索
 int Binary_Search(int l, int r, int k)
 {
@@ -519,7 +543,7 @@ std::upper_bound(v.begin(), v.end(), cmp_ele, cmp) // -> iterator
 
 #### 三分
 
-```cpp
+```c++
 /* 凸函数的极大值 */
 int Ternary_Search(int l, int r)
 {   
