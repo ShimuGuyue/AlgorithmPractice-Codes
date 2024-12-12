@@ -5,8 +5,12 @@ void Solve(void);
 int main(void)
 {
 	#ifdef Shimu_Guyue
-	freopen(".in.in"  , "r", stdin );
-	freopen(".out.out", "w", stdout);
+		freopen(".in.in"  , "r", stdin );
+		freopen(".out.out", "w", stdout);
+		#define RUN_TIME \
+			std::cerr << (clock() * 1.0 / CLOCKS_PER_SEC) * 1000 << " ms" << std::endl;
+	#else
+		#define RUN_TIME
 	#endif
 
     std::ios::sync_with_stdio(false);
@@ -19,6 +23,7 @@ int main(void)
 		Solve();
 		//std::cout << std::endl;
 	}
+	RUN_TIME
 	return 0;
 }
 
