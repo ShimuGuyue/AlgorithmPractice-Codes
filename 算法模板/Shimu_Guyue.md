@@ -627,6 +627,7 @@ void Dfs(int node, int set, std::vector<int>& sets, std::vector<std::vector<int>
 
 void Merge(std::vector<int>& sets, std::vector<std::vector<int>>& relations)    // 集合合并
 {
+    int n(sets.size());
     for (int i(0); i < n; ++i)
     {
         if (sets[i] < i)    // 属于别人的集合
@@ -637,6 +638,7 @@ void Merge(std::vector<int>& sets, std::vector<std::vector<int>>& relations)    
 
 int Count(std::vector<int> sets)    // 查询集合数量
 {
+    int n(sets.size());
     std::set<int> counts;
     for (int i(0); i < n; ++i)
     {
