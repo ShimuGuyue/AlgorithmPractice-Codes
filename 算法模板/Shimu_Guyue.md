@@ -594,6 +594,58 @@ int Ternary_Search(int l, int r)
 }
 ```
 
+### 并查集
+
+```c++
+// n 个节点，m 个联通关系
+int n, m;
+
+std::vector<int> sets(n);
+std::vector<std::vector<int>> relations(n);
+
+void Init(int m, std::vector<std::vector<int>>& relations) // 初始关系建图
+{
+    while (m--)
+    {
+        int i, j;
+        std::cin >> i >> j;
+        relations[i].push_back(j);
+        relations[j].push_back(i);
+    }
+}
+
+void Dfs(int node, int set, std::vector<int>& sets, std::vector<std::vector<int>>& relations)
+{
+	for (int next : relations[node])
+	{
+		if (sets[next] == set)
+			continue;
+		sets[next] = set;
+		Dfs(next, set, sets, relations);
+	}
+}
+
+void Merge(std::vector<int>& sets, std::vector<std::vector<int>>& relations)    // 集合合并
+{
+    for (int i(0); i < n; ++i)
+    {
+        if (sets[i] < i)    // 属于别人的集合
+			continue;
+		Dfs(i, i, sets, relations);  // 自己是集合首领
+    }
+}
+
+int Count(std::vector<int> sets)    // 查询集合数量
+{
+    std::set<int> counts;
+    for (int i(0); i < n; ++i)
+    {
+        counts.insert(sets[i]);
+    }
+    return counts.size();
+}
+```
+
 ## 动态规划 DP
 
 ### 01背包

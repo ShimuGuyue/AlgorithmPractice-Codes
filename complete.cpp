@@ -8,7 +8,7 @@ int main(void)
 		freopen(".in.in"  , "r", stdin );
 		freopen(".out.out", "w", stdout);
 		#define RUN_TIME \
-			std::cerr << (clock() * 1.0 / CLOCKS_PER_SEC) * 1000 << " ms" << std::endl;
+			std::clog << (clock() * 1.0 / CLOCKS_PER_SEC) * 1000 << " ms" << std::endl;
 	#else
 		#define RUN_TIME
 	#endif
