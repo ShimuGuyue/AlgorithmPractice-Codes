@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdint>
+#include <vector>
 
 void Solve(void);
 
@@ -18,7 +19,7 @@ int main(void)
     std::cin.tie(NULL); std::cout.tie(NULL);
 
     int32_t t = 1;
-	//std::cin >> t;
+	std::cin >> t;
 	while (t--)
 	{
 		Solve();
@@ -30,22 +31,24 @@ int main(void)
 
 void Solve(void)
 {
-	std::string s;
-	std::cin >> s;
-	s += s.back();
-	int32_t n = s.size();
-	int64_t ans = 0;
-	for (int32_t i = 1; i < n; ++i)
+	std::string n;
+	std::cin >> n;
+	int32_t count = 0;
+	std::vector<int32_t> anss;
+	int32_t flag = 1;
+	for (int32_t i = 1; i <= n.size(); ++i)
 	{
-		for (int j = i; j < n; ++j)
-		{
-			if (s[j] == s[j - 1])
-			{
-				int64_t len = j - i + 1;
-				ans += len * (len - 1) / 2;
-				i = j + 1;
-			}
-		}
+		flag *= 10;
+		char c = n[n.size() - i];
+		if (c == '0')
+			continue;
+		++count;
+		anss.push_back((c - '0') * flag / 10);
 	}
-	std::cout << ans << std::endl;
+	std::cout << count << std::endl;
+	for (int32_t ans : anss)
+	{
+		std::cout << ans << " ";
+	}
+	std::cout << std::endl;
 }

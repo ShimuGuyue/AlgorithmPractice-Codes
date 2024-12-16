@@ -1,5 +1,5 @@
 #include <iostream>
-#include <cstdint>
+#include <map>
 
 void Solve(void);
 
@@ -17,7 +17,7 @@ int main(void)
     std::ios::sync_with_stdio(false);
     std::cin.tie(NULL); std::cout.tie(NULL);
 
-    int32_t t = 1;
+    int t(1);
 	//std::cin >> t;
 	while (t--)
 	{
@@ -30,22 +30,16 @@ int main(void)
 
 void Solve(void)
 {
-	std::string s;
-	std::cin >> s;
-	s += s.back();
-	int32_t n = s.size();
-	int64_t ans = 0;
-	for (int32_t i = 1; i < n; ++i)
+	int n;
+	std::cin >> n;
+	std::map<int, int> counts;
+	while (n--)
 	{
-		for (int j = i; j < n; ++j)
-		{
-			if (s[j] == s[j - 1])
-			{
-				int64_t len = j - i + 1;
-				ans += len * (len - 1) / 2;
-				i = j + 1;
-			}
-		}
+		int a;
+		std::cin >> a;
+		++counts[a];
 	}
-	std::cout << ans << std::endl;
+	int min(counts.begin()->first);
+	int	max(counts.rbegin()->first);
+	std::cout << max - min << " " << (max + min + 1) / 2 << std::endl;
 }

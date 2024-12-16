@@ -31,19 +31,8 @@ int main(void)
 
 void Solve(void)
 {
-	std::cout << 1 << std::endl;
-	int n(rand() % 100 + 1);
-	std::cout << n << std::endl;
-	for (int i(0); i < n; ++i)
+	for (int i = 0; i <= 1000; ++i)
 	{
-		int a(rand() % 200 - 100);
-		std::cout << a << " ";
+		std::cout << i << " : " << (i & 1) << std::endl;
 	}
-	std::cout << std::endl;
-	for (int i(0); i < n; ++i)
-	{
-		int a(rand() % 200 - 100);
-		std::cout << a << " ";
-	}
-	std::cout << std::endl;
 }

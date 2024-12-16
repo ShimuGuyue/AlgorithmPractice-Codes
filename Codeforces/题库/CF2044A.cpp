@@ -18,7 +18,7 @@ int main(void)
     std::cin.tie(NULL); std::cout.tie(NULL);
 
     int32_t t = 1;
-	//std::cin >> t;
+	std::cin >> t;
 	while (t--)
 	{
 		Solve();
@@ -30,22 +30,7 @@ int main(void)
 
 void Solve(void)
 {
-	std::string s;
-	std::cin >> s;
-	s += s.back();
-	int32_t n = s.size();
-	int64_t ans = 0;
-	for (int32_t i = 1; i < n; ++i)
-	{
-		for (int j = i; j < n; ++j)
-		{
-			if (s[j] == s[j - 1])
-			{
-				int64_t len = j - i + 1;
-				ans += len * (len - 1) / 2;
-				i = j + 1;
-			}
-		}
-	}
-	std::cout << ans << std::endl;
+	int32_t n;
+	std::cin >> n;
+	std::cout << n - 1 << std::endl;
 }

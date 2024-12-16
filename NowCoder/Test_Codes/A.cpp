@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdint>
 
 void Solve(void);
 
@@ -16,7 +17,7 @@ int main(void)
     std::ios::sync_with_stdio(false);
     std::cin.tie(NULL); std::cout.tie(NULL);
 
-    int t(1);
+    int32_t t = 1;
 	//std::cin >> t;
 	while (t--)
 	{
@@ -29,22 +30,14 @@ int main(void)
 
 void Solve(void)
 {
-	int n, a, b, c;
-	std::cin >> n >> a >> b >> c;
-	int ans(0);
-	while (1)
+	std::string s;
+	std::cin >> s;
+	int32_t n = s.size();
+	int32_t ans = 0;
+	for (int32_t i = 1; i < n; ++i)
 	{
-		if (n >= a)
-			n -= a, 
+		if (s[i] != s[i - 1])
 			++ans;
-		else if (n >= b)
-			n -= b,
-			++ans;
-		else if (n >= c)
-			n -= c,
-			++ans;
-		else
-			break;
 	}
 	std::cout << ans << std::endl;
 }
