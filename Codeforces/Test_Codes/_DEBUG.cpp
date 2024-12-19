@@ -31,8 +31,5 @@ int main(void)
 
 void Solve(void)
 {
-	for (int i = 0; i <= 1000; ++i)
-	{
-		std::cout << i << " : " << (i & 1) << std::endl;
-	}
+	1 >> 3;
 }

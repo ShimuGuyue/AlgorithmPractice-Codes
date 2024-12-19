@@ -105,15 +105,128 @@ bool Is_prime(int x)
 /*最大公因数*/
 int Gcd(int a, int b)
 {
-    if (a % b == 0)
-        return b;
-    return Gcd(b, a % b);
+    return a % b ? Gcd(b, a % b) : b;
 }
 
 /*最小公倍数*/
 int Lcm(int a, int b)
 {
     return a / Gcd(a, b) * b;
+}
+```
+
+### 后缀表达式（逆波兰表达式）
+
+#### 中缀表达式转后缀表达式
+
+```c++
+std::string Infix_to_Postfix(std::string infix)
+{
+    infix += '#';
+    std::string postfix;
+
+    auto Priority = [](char c) -> int   // 运算符优先级
+    {
+        if (c == '+' || c == '-')
+            return 1;
+        if (c == '*' || c == '/' || c == '%')
+            return 2;
+        return 0;
+    };
+
+    std::string ch = ".";  // 分隔符
+    int temp = 0;
+
+    std::stack<char> k;
+
+    for (char c : infix)
+    {
+        if (isdigit(c))
+            temp = temp * 10 + (c - '0');
+        else
+        {
+            if (temp)
+            {
+                postfix += std::to_string(temp) + ch;
+                temp = 0;
+            }
+            if (c == '#')
+            {
+                while (!k.empty())
+                {
+                    postfix += k.top() + ch;
+                    k.pop();
+                }
+            }
+            else if (c == '+' || c == '-' || c == '*' || c == '/' || c == '%')
+            {
+                while (!k.empty() && Priority(k.top()) >= Priority(c))
+                {
+                    postfix += k.top() + ch;
+                    k.pop();
+                }
+                k.push(c);
+            }
+            else if (c == '(')
+            {
+                k.push(c);
+            }
+            else if (c == ')')
+            {
+                while (k.top() != '(')
+                {
+                    postfix += k.top() + ch;
+                    k.pop();
+                }
+                k.pop();
+            }
+        }
+    }
+    return postfix;
+}
+```
+
+#### 后缀表达式的计算
+
+```c++
+int Calculate_by_Postfix(std::string postfix)
+{
+    std::stack<int> digits;
+
+    char ch = '.';  // 分隔符
+
+    int digit = 0;
+    for (char c : postfix)
+    {
+
+        if (isdigit(c))
+            digit = digit * 10 + (c - '0');
+        else if (c == ch)
+        {
+            if (digit)
+            {
+                digits.push(digit);
+                digit = 0;
+            }
+        }
+        else    // 运算符
+        {
+            int b = digits.top(); digits.pop();
+            int a = digits.top(); digits.pop();
+            if (c == '+')
+                digits.push(a + b);
+            else if (c == '-')
+                digits.push(a - b);
+            else if (c == '*')
+                digits.push(a * b);
+            else if (c == '/')
+                digits.push(a / b);
+            else if (c == '%')
+                digits.push(a % b);
+        }
+    }
+
+    return digits.top();
 }
 ```
 
@@ -218,9 +331,9 @@ int Catalan(int n)
 }
 ```
 
-## 高精度运算 （逆序）（非负数）
+### 高精度运算 （逆序）（非负数）
 
-### 高精度 + 高精度
+#### 高精度 + 高精度
 
 ```c++
 // 以字符串形式输入
@@ -278,7 +391,7 @@ std::vector<int> operator+(std::vector<int>& a, std::vector<int>& b)
 }
 ```
 
-### 高精度 * 低精度
+#### 高精度 * 低精度
 
 ```c++
 // 分别以字符串形式和整数形式输入
@@ -328,7 +441,7 @@ std::vector<int> operator*(std::vector<int>& a, int b)
 }
 ```
 
-### 高精度 * 高精度
+#### 高精度 * 高精度
 
 ```c++
 // 以字符串形式输入
@@ -391,7 +504,7 @@ std::vector<int> operator*(std::vector<int> &a, std::vector<int> &b)
 }
 ```
 
-### 高精度 / 低精度
+#### 高精度 / 低精度
 
 ```c++
 // 分别以字符串形式和整数形式输入
@@ -440,7 +553,7 @@ std::vector<int> operator/(std::vector<int>& a, int b)
 }
 ```
 
-### 高精度比较大小
+#### 高精度比较大小
 
 ```c++
 // 重载 > 运算符
