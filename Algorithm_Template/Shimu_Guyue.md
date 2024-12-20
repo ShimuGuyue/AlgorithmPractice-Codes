@@ -720,11 +720,11 @@ struct BigInt
         for (int i = n - 1; i >= 0; --i)
         {
             temp *= ten;
-            BigInt digit = BigInt{{a[i]}, true};
+            BigInt digit = BigInt{std::vector<int>{a[i]}, true};
             temp += digit;
 
             int multiple = 0;
-            while (temp > zreo && Greater(temp, Ib))
+            while (temp > zreo && Greater_or_Equal(temp, Ib))
             {
                 Subtract_and_Assign(temp, Ib, true);
                 ++multiple;
@@ -739,7 +739,7 @@ struct BigInt
             if (ans[i] >= 10)
             {
                 if (i != n - 1)
-                    ++ans[i + 1];
+                    ans[i + 1] += ans[i] / 10;
                 else
                     ans.push_back(1);
                 ans[i] %= 10;
@@ -773,11 +773,11 @@ struct BigInt
         for (int i = n - 1; i >= 0; --i)
         {
             temp *= ten;
-            BigInt digit = BigInt{{a[i]}, true};
+            BigInt digit = BigInt{std::vector<int>{a[i]}, true};
             temp += digit;
 
             int multiple = 0;
-            while (temp > zreo && Greater(temp, Ib))
+            while (temp > zreo && Greater_or_Equal(temp, Ib))
             {
                 Subtract_and_Assign(temp, Ib, true);
                 ++multiple;
@@ -792,7 +792,7 @@ struct BigInt
             if (a[i] >= 10)
             {
                 if (i != n - 1)
-                    ++a[i + 1];
+                    a[i + 1] += a[i] / 10;
                 else
                     a.push_back(1);
                 a[i] %= 10;
