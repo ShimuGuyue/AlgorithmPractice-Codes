@@ -1,33 +1,37 @@
 #include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
 
-void Solve(void);
+struct Student
+{
+    std::string sex;
+    double h;
+};
+
 
 int main(void)
 {
-	#ifdef Shimu_Guyue
-		freopen(".in.in"  , "r", stdin );
-		freopen(".out.out", "w", stdout);
-		#define RUN_TIME \
-			std::cerr << (clock() * 1.0 / CLOCKS_PER_SEC) * 1000 << " ms" << std::endl;
-	#else
-		#define RUN_TIME
-	#endif
-
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(NULL); std::cout.tie(NULL);
-
-    int t(1);
-	//std::cin >> t;
-	while (t--)
+    int n;
+    std::cin >> n;
+    std::vector<Student> students(n);
+    for (int i = 0; i < n; ++i)
+    {
+        std::cin >> students[i].sex >> students[i].h;
+    }
+    std::sort(students.begin(), students.end(),
+    [](Student a, Student b)
+    {
+        if (a.sex != b.sex)
+            return a.sex.length() < b.sex.length();
+        if (a.sex == "male")
+            return a.h < b.h;
+        return a.h > b.h;
+    });
+	for (Student stu : students)
 	{
-		Solve();
-		//std::cout << std::endl;
+		std::cout << std::fixed << std::setprecision(2) << stu.h << " ";
 	}
-	RUN_TIME
-	return 0;
-}
-
-void Solve(void)
-{
-
+	std::cout << std::endl;
+    return 0;
 }
