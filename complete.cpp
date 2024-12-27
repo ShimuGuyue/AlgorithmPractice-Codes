@@ -7,8 +7,6 @@ int main(void)
 	#ifdef Shimu_Guyue
 		freopen(".in.in"  , "r", stdin );
 		freopen(".out.out", "w", stdout);
-		#define RUN_TIME \
-			std::clog << (clock() * 1.0 / CLOCKS_PER_SEC) * 1000 << " ms" << std::endl;
 	#else
 		#define RUN_TIME
 	#endif
