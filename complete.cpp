@@ -1,4 +1,29 @@
 #include <iostream>
+#include <iomanip>
+#include <cstdint>
+#include <string>
+#include <vector>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <set>
+#include <map>
+#include <algorithm>
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::fixed;
+using std::setprecision;
+using std::pair;
+using std::string;
+using std::vector;
+using std::deque;
+using std::queue;
+using std::stack;
+using std::set;
+using std::map;
+using std::sort;
 
 void Solve(void);
 
@@ -12,14 +37,14 @@ int main(void)
 	#endif
 
     std::ios::sync_with_stdio(false);
-    std::cin.tie(NULL); std::cout.tie(NULL);
+    cin.tie(NULL); cout.tie(NULL);
 
     int t = 1;
-	//std::cin >> t;
+	// cin >> t;
 	while (t--)
 	{
 		Solve();
-		//std::cout << std::endl;
+		// cout << endl;
 	}
 	RUN_TIME
 	return 0;
