@@ -120,10 +120,10 @@ int Lcm(int a, int b)
 #### 中缀表达式转后缀表达式
 
 ```c++
-std::string Infix_to_Postfix(std::string infix)
+string Infix_to_Postfix(string infix)
 {
     infix += '#';
-    std::string postfix;
+    string postfix;
 
     auto Priority = [](char c) -> int   // 运算符优先级
     {
@@ -134,21 +134,22 @@ std::string Infix_to_Postfix(std::string infix)
         return 0;
     };
 
-    std::string ch = ".";  // 分隔符
+    string ch = ".";  // 分隔符
     int temp = 0;
 
-    std::stack<char> k;
+    stack<char> k;
+    string digit = "";
 
     for (char c : infix)
     {
         if (isdigit(c))
-            temp = temp * 10 + (c - '0');
+            digit += c;
         else
         {
             if (temp)
             {
-                postfix += std::to_string(temp) + ch;
-                temp = 0;
+                postfix += digit + ch;
+                digit = "";
             }
             if (c == '#')
             {
@@ -189,24 +190,24 @@ std::string Infix_to_Postfix(std::string infix)
 #### 后缀表达式的计算
 
 ```c++
-int Calculate_by_Postfix(std::string postfix)
+int Calculate_by_Postfix(string postfix)
 {
-    std::stack<int> digits;
+    stack<int> digits;
 
     char ch = '.';  // 分隔符
 
-    int digit = 0;
+    string digit = "";
     for (char c : postfix)
     {
 
         if (isdigit(c))
-            digit = digit * 10 + (c - '0');
+            digit += c;
         else if (c == ch)
         {
-            if (digit)
+            if (!digit.empty())
             {
-                digits.push(digit);
-                digit = 0;
+                digits.push(stoi(digit));
+                digit = "";
             }
         }
         else    // 运算符

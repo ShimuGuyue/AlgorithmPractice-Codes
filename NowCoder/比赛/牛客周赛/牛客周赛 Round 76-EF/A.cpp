@@ -33,8 +33,8 @@ void Solve(void);
 int main(void)
 {
 	#ifdef Shimu_Guyue
-		freopen("test.in" , "r", stdin );
-		freopen("test.out", "w", stdout);
+		freopen(".in.in"  , "r", stdin );
+		freopen(".out.out", "w", stdout);
 	#else
 		#define RUN_TIME
 	#endif
@@ -55,5 +55,10 @@ int main(void)
 
 void Solve(void)
 {
-
+	int n;
+	cin >> n;
+	int ans = n / 7 * 5 * 3;
+	n %= 7;
+	ans += (n > 5 ? 5 : n) * 3;
+	cout << ans << endl;
 }
