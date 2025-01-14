@@ -1,16 +1,6 @@
 
-AtCoder/Test/test.cpp
-AtCoder/Test/test.in
-AtCoder/Test/test.out
-Codeforces/Test/test.cpp
-Codeforces/Test/test.in
-Codeforces/Test/test.out
-LanQiao/Test/test.cpp
-LanQiao/Test/test.in
-LanQiao/Test/test.out
-LuoGu/Test/test.cpp
-LuoGu/Test/test.in
-LuoGu/Test/test.out
-NowCoder/Test/test.cpp
-NowCoder/Test/test.in
-NowCoder/Test/test.out
+AtCoder/Test
+Codeforces/Test
+LanQiao/Test
+LuoGu/Test
+NowCoder/Test
