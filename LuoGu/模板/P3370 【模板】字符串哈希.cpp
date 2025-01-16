@@ -53,5 +53,14 @@ int main(void)
 
 void Solve(void)
 {
-
+	int n;
+	cin >> n;
+	set<string> strings;
+	while (n--)
+	{
+		string s;
+		cin >> s;
+		strings.insert(s);
+	}
+	cout << strings.size() << endl;
 }
