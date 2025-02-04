@@ -64,11 +64,11 @@ int main(void)
 
 void Solve(void)
 {
-	const int m = 5001;
+	const int k = 5001;
 
-	int n, r;
-	cin >> n >> r;
-	vector<vector<int>> grid(m, vector<int>(m));
+	int n, m;
+	cin >> n >> m;
+	vector<vector<int>> grid(k, vector<int>(k));
 	while (n--)
 	{
 		int x, y, v;
@@ -76,40 +76,40 @@ void Solve(void)
 		grid[x][y] += v;
 	}
 
-	vector<vector<int>> sums(m, vector<int>(m));
+	vector<vector<int>> sums(k, vector<int>(k));
 	sums[0][0] = grid[0][0];
-	for (int i = 1; i < m; ++i)
+	for (int i = 1; i < k; ++i)
 	{
 		sums[i][0] = sums[i - 1][0] + grid[i][0];
 	}
-	for (int j = 1; j < m; ++j)
+	for (int j = 1; j < k; ++j)
 	{
 		sums[0][j] = sums[0][j - 1] + grid[0][j];
 	}
-	for (int i = 1; i < m; ++i)
+	for (int i = 1; i < k; ++i)
 	{
-		for (int j = 1; j < m; ++j)
+		for (int j = 1; j < k; ++j)
 		{
 			sums[i][j] = sums[i - 1][j] + sums[i][j - 1] - sums[i - 1][j - 1] + grid[i][j];
 		}
 	}
 
-	int ans = sums[r - 1][r - 1];
-	for (int i = r; i < m; ++i)
+	int ans = sums[m - 1][m - 1];
+	for (int i = m; i < k; ++i)
 	{
-		int sum = sums[i][r - 1] - sums[i - r][r - 1];
+		int sum = sums[i][m - 1] - sums[i - m][m - 1];
 		ans = std::max(ans, sum);
 	}
-	for (int j = r; j < m; ++j)
+	for (int j = m; j < k; ++j)
 	{
-		int sum = sums[r - 1][j] - sums[r - 1][j - r];
+		int sum = sums[m - 1][j] - sums[m - 1][j - m];
 		ans = std::max(ans, sum);
 	}
-	for (int i = r; i < m; ++i)
+	for (int i = m; i < k; ++i)
 	{
-		for (int j = r; j < m; ++j)
+		for (int j = m; j < k; ++j)
 		{
-			int sum = sums[i][j] - sums[i - r][j] - sums[i][j - r] + sums[i - r][j - r];
+			int sum = sums[i][j] - sums[i - m][j] - sums[i][j - m] + sums[i - m][j - m];
 			ans = std::max(ans, sum);
 		}
 	}
