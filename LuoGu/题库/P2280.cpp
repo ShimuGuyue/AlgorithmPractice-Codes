@@ -73,7 +73,7 @@ void Solve(void)
 	{
 		int x, y, v;
 		cin >> x >> y >> v;
-		grid[x][y] = v;
+		grid[x][y] += v;
 	}
 
 	vector<vector<int>> sums(m, vector<int>(m));
