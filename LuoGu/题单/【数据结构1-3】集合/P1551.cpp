@@ -1,79 +1,137 @@
+//  $$$$$$\  $$\   $$\     $$\  $$$$$$\  $$$$$$\  $$$$$$\  
+// $$  __$$\ $$ |  \$$\   $$  |$$  __$$\ \_$$  _|$$  __$$\ 
+// $$ /  $$ |$$ |   \$$\ $$  / $$ /  \__|  $$ |  $$ /  $$ |
+// $$$$$$$$ |$$ |    \$$$$  /  \$$$$$$\    $$ |  $$$$$$$$ |
+// $$  __$$ |$$ |     \$$  /    \____$$\   $$ |  $$  __$$ |
+// $$ |  $$ |$$ |      $$ |    $$\   $$ |  $$ |  $$ |  $$ |
+// $$ |  $$ |$$$$$$$$\ $$ |    \$$$$$$  |$$$$$$\ $$ |  $$ |
+// \__|  \__|\________|\__|     \______/ \______|\__|  \__|
+// 你是否赞同纯美女神爱莉希雅的美貌盖世无双？【愛門】!
 #include <iostream>
+#include <iomanip>
+#include <cstdint>
+#include <climits>
+#include <string>
 #include <vector>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <set>
+#include <map>
+#include <algorithm>
 
-int n, m, p;
-std::vector<int> sets;
-std::vector<std::vector<int>> relatives;
+using std::cin;
+using std::cout;
+using std::endl;
+using std::fixed;
+using std::setprecision;
+using std::setw;
+using std::pair;
+using std::string;
+using std::to_string;
+using std::vector;
+using std::deque;
+using std::queue;
+using std::stack;
+using std::priority_queue;
+using std::set;
+using std::map;
+using std::sort;
+using std::max_element;
+using std::min_element;
 
-void Dfs(int node, int set);
+/*----------------------------------struct----------------------------------*/
+
+struct Node
+{
+	int father;
+	int rank;
+
+	Node()
+	{}
+	Node(int i) : father(i), rank(1)
+	{}
+};
+
+struct DisjointSet
+{
+	vector<Node> nodes;
+
+	DisjointSet(int n) : nodes(n + 1)
+	{
+		for (int i = 1; i <= n; ++i)
+		{
+			nodes[i] = Node(i);
+		}
+	}
+
+	int FintSet(int x)
+	{
+		return nodes[x].father == x ? x : nodes[x].father = FintSet(nodes[x].father);
+	}
+
+	void Merge(int x, int y)
+	{
+		int set_x = FintSet(x);
+		int set_y = FintSet(y);
+		if (nodes[set_x].rank > nodes[set_y].rank)
+			nodes[set_y].father = nodes[set_x].father;
+		else
+			nodes[set_x].father = nodes[set_y].father;
+		if (nodes[set_x].rank == nodes[set_y].rank)
+			++nodes[set_y].rank;
+	}
+
+	void IsSameSet(int x, int y)
+	{
+		cout << (FintSet(x) == FintSet(y) ? "Yes" : "No") << endl;
+	}
+};
+
+/*-----------------------------------head-----------------------------------*/
+
 void Solve(void);
+
+/*-----------------------------------main-----------------------------------*/
 
 int main(void)
 {
 	#ifdef Shimu_Guyue
-	freopen(".in.in"  , "r", stdin );
-	freopen(".out.out", "w", stdout);
+		freopen("test.in" , "r", stdin );
+		freopen("test.out", "w", stdout);
+	#else
 	#endif
 
     std::ios::sync_with_stdio(false);
-    std::cin.tie(NULL); std::cout.tie(NULL);
+    cin.tie(NULL); cout.tie(NULL);
 
-    int t(1);
-	//std::cin >> t;
+    int t = 1;
+	// cin >> t;
 	while (t--)
 	{
 		Solve();
-		//std::cout << std::endl;
+		// cout << "-------------------------" << endl;
 	}
 	return 0;
 }
 
+/*-----------------------------------body-----------------------------------*/
+
 void Solve(void)
 {
-	// int n, m, p;
-	std::cin >> n >> m >> p;
-
-	// std::vector<int> sets(n + 1);
-	sets = std::vector<int>(n + 1);
-	// std::vector<std::vector<int>> relatives(n + 1);
-	relatives = std::vector<std::vector<int>>(n + 1);
-	for (int i(1); i <= n; ++i)
-	{
-		sets[i] = i;
-	}
-
+	int n, m, p;
+	cin >> n >> m >> p;
+	DisjointSet ds(n);
 	while (m--)
 	{
 		int i, j;
-		std::cin >> i >> j;
-		relatives[i].push_back(j);
-		relatives[j].push_back(i);
+		cin >> i >> j;
+		ds.Merge(i, j);
 	}
-	for (int i(1); i <= n; ++i)
-	{
-		if (sets[i] != i)
-			continue;
-		Dfs(i, i);
-	}
-
 	while (p--)
 	{
 		int i, j;
-		std::cin >> i >> j;
-		if (sets[i] == sets[j])
-			std::cout << "Yes" << std::endl;
-		else
-			std::cout << "No" << std::endl;
-	}
-}
-
-void Dfs(int node, int set)
-{
-	for (int next : relatives[node])
-	{
-		if (sets[next] == set)
-			continue;
-		sets[next] = set;
-		Dfs(next, set);
+		cin >> i >> j;
+		ds.IsSameSet(i, j);
 	}
 }
