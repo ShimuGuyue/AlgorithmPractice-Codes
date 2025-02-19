@@ -6,3 +6,5 @@ LanQiao/Test/
 LuoGu/Test/
 NowCoder/Test/
 complete.cpp
+*.in
+*.out
