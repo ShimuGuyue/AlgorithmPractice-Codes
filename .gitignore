@@ -5,7 +5,8 @@ Codeforces/Test/
 LanQiao/Test/
 LuoGu/Test/
 NowCoder/Test/
-complete.cpp
+template.cpp
+test.cpp
 *.in
 *.out
 *.exe
