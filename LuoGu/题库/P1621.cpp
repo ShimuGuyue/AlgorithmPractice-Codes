@@ -126,9 +126,6 @@ void Solve(void)
 		{
 			ds.Merge(i, prime);
 		}
-		// cout << prime <<":" << endl;
-		// for (int i=a;i<=b;++i)cout<<std::setw(3)<<ds.fathers[i]<<" ";cout<<endl;
-		// for (int i=a;i<=b;++i)cout<<std::setw(3)<<i<<" ";cout<<endl;
 	}
 	cout << ds.Count(a, b) << endl;
 }
@@ -159,6 +156,5 @@ vector<int> Primes(int n, int a)
 			}
 		}
 	}
-	// return primes;
 	return vector<int>(lower_bound(primes.begin(), primes.end(), a), primes.end());
 }
