@@ -3,8 +3,5 @@
 */Test/
 template.cpp
 test.cpp
-*.in
-*.out
 *.exe
 *.test
-rand.h
