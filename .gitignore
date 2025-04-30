@@ -1,7 +1,6 @@
 
 .vscode/
-*/Test/
-template.cpp
-test.cpp
 *.exe
 *.test
+*.cpp
+*/*.cpp
