@@ -1,6 +1,4 @@
 
+.test/
 .vscode/
-*.exe
-*.test
-*.cpp
 */*.cpp
