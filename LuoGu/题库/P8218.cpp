@@ -56,8 +56,6 @@ using std::end;
 using std::bitset;
 #include <algorithm>
 using std::sort;
-using std::max_element;
-using std::min_element;
 #include <random>
 
 #pragma endregion
@@ -275,13 +273,6 @@ int64_t Ceil(int64_t a, int64_t b)
 	return a / b + (a % b != 0);
 }
 
-template<typename T>
-void Remove_same(std::vector<T> &v)
-{
-	std::sort(v.begin(), v.end());
-	v.erase(std::unique(v.begin(), v.end()), v.end());
-}
-
 #pragma endregion
 
 #pragma region Random
@@ -305,43 +296,31 @@ using MinHeap = std::priority_queue<T, std::vector<T>, std::greater<T>>;
 class ShimuGuyue
 {
 public:
-	static const bool MULTIPLE_TESTS = true;
+	static const int mod = 1e9+7;
 public:
 	static void Solve()
 	{
 		int n;
 		cin >> n;
-		vector<Edge> edges(n);
-		cin >> edges;
-		sort(edges.rbegin(), edges.rend());
-		vector<int> indexs;
-		for (auto [u, v, w] : edges)
+		vector<int> as(n + 1, 0);
+		for (int i = 1; i <= n; ++i)
 		{
-			indexs.push_back(u);
-			indexs.push_back(v);
+			cin >> as[i];
 		}
-		Remove_same(indexs);
-		int m = indexs.size();
-		
-		DisjointSet ds(m + 1);
-		for (auto [u, v, w] : edges)
+		vector<int> presums(n + 1, 0);
+		for (int i = 1; i <= n; ++i)
 		{
-			u = std::lower_bound(indexs.begin(), indexs.end(), u) - indexs.begin();
-			v = std::lower_bound(indexs.begin(), indexs.end(), v) - indexs.begin();
-			if (w == 1)
-			{
-				ds.Merge_set(u, v);
-			}
-			else
-			{
-				if (ds.In_same_set(u, v))
-				{
-					cout << "NO" << endl;
-					return;
-				}
-			}
+			presums[i] = presums[i - 1] + as[i];
 		}
-		cout << "YES" << endl;
+		int m;
+		cin >> m;
+		while (m--)
+		{
+			int l, r;
+			cin >> l >> r;
+			int ans = presums[r] - presums[l - 1];
+			cout << ans << endl;
+		}
 	}
 
 	// static 
@@ -359,9 +338,8 @@ int main()
     std::ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-	int t = 1;
-	if (ShimuGuyue::MULTIPLE_TESTS)
-		cin >> t;
+    int t = 1;
+	// cin >> t;
 	while (t--)
 	{
 		ShimuGuyue::Solve();

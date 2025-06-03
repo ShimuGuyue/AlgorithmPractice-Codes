@@ -56,8 +56,6 @@ using std::end;
 using std::bitset;
 #include <algorithm>
 using std::sort;
-using std::max_element;
-using std::min_element;
 #include <random>
 
 #pragma endregion
@@ -275,13 +273,6 @@ int64_t Ceil(int64_t a, int64_t b)
 	return a / b + (a % b != 0);
 }
 
-template<typename T>
-void Remove_same(std::vector<T> &v)
-{
-	std::sort(v.begin(), v.end());
-	v.erase(std::unique(v.begin(), v.end()), v.end());
-}
-
 #pragma endregion
 
 #pragma region Random
@@ -305,43 +296,57 @@ using MinHeap = std::priority_queue<T, std::vector<T>, std::greater<T>>;
 class ShimuGuyue
 {
 public:
-	static const bool MULTIPLE_TESTS = true;
+	static const bool MULTIPLE_TESTS = false;
 public:
 	static void Solve()
 	{
-		int n;
-		cin >> n;
-		vector<Edge> edges(n);
-		cin >> edges;
-		sort(edges.rbegin(), edges.rend());
-		vector<int> indexs;
-		for (auto [u, v, w] : edges)
+		int64_t n, m, s;
+		cin >> n >> m >> s;
+		vector<int64_t> ws(n + 1, 0);
+		vector<int64_t> vs(n + 1, 0);
+		for (int i = 1; i <= n; ++i)
 		{
-			indexs.push_back(u);
-			indexs.push_back(v);
+			cin >> ws[i] >> vs[i];
 		}
-		Remove_same(indexs);
-		int m = indexs.size();
-		
-		DisjointSet ds(m + 1);
-		for (auto [u, v, w] : edges)
+		vector<pair<int, int>> querys(m);
+		cin >> querys;
+
+		auto Check = [&n, &s, &ws, &vs, &querys](int w) -> int64_t
 		{
-			u = std::lower_bound(indexs.begin(), indexs.end(), u) - indexs.begin();
-			v = std::lower_bound(indexs.begin(), indexs.end(), v) - indexs.begin();
-			if (w == 1)
+			vector<int> presums_count(n + 1);
+			vector<int64_t> presums_v(n + 1);
+			for (int i = 1; i <= n; ++i)
 			{
-				ds.Merge_set(u, v);
-			}
-			else
-			{
-				if (ds.In_same_set(u, v))
+				presums_count[i] = presums_count[i - 1];
+				presums_v[i] = presums_v[i - 1];
+				if (ws[i] >= w)
 				{
-					cout << "NO" << endl;
-					return;
+					presums_count[i] += 1;
+					presums_v[i] += vs[i];
 				}
 			}
+			int64_t count = 0;
+			for (auto [l, r] : querys)
+			{
+				count += (presums_count[r] - presums_count[l - 1]) * (presums_v[r] - presums_v[l - 1]);
+			}
+			return count;
+		};
+
+		int64_t ans = 1e18;
+		int l = *std::min_element(ws.begin(), ws.end());
+		int r = *std::max_element(ws.begin(), ws.end());
+		while (l <= r)
+		{
+			int mid = (l + r) / 2;
+			int64_t flag = Check(mid);
+			if (flag > s)
+				l = mid + 1;
+			else
+				r = mid - 1;
+			ans = std::min(ans, int64_t(llabs(flag - s)));
 		}
-		cout << "YES" << endl;
+		cout << ans << endl;
 	}
 
 	// static 

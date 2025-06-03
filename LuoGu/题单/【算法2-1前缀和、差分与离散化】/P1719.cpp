@@ -56,8 +56,6 @@ using std::end;
 using std::bitset;
 #include <algorithm>
 using std::sort;
-using std::max_element;
-using std::min_element;
 #include <random>
 
 #pragma endregion
@@ -275,13 +273,6 @@ int64_t Ceil(int64_t a, int64_t b)
 	return a / b + (a % b != 0);
 }
 
-template<typename T>
-void Remove_same(std::vector<T> &v)
-{
-	std::sort(v.begin(), v.end());
-	v.erase(std::unique(v.begin(), v.end()), v.end());
-}
-
 #pragma endregion
 
 #pragma region Random
@@ -305,43 +296,46 @@ using MinHeap = std::priority_queue<T, std::vector<T>, std::greater<T>>;
 class ShimuGuyue
 {
 public:
-	static const bool MULTIPLE_TESTS = true;
+	static const bool MULTIPLE_TESTS = false;
 public:
 	static void Solve()
 	{
 		int n;
 		cin >> n;
-		vector<Edge> edges(n);
-		cin >> edges;
-		sort(edges.rbegin(), edges.rend());
-		vector<int> indexs;
-		for (auto [u, v, w] : edges)
+		vector<vector<int>> as(n + 1, vector<int>(n + 1, 0));
+		for (int i = 1; i <= n; ++i)
 		{
-			indexs.push_back(u);
-			indexs.push_back(v);
-		}
-		Remove_same(indexs);
-		int m = indexs.size();
-		
-		DisjointSet ds(m + 1);
-		for (auto [u, v, w] : edges)
-		{
-			u = std::lower_bound(indexs.begin(), indexs.end(), u) - indexs.begin();
-			v = std::lower_bound(indexs.begin(), indexs.end(), v) - indexs.begin();
-			if (w == 1)
+			for (int j = 1; j <= n; ++j)
 			{
-				ds.Merge_set(u, v);
+				cin >> as[i][j];
 			}
-			else
+		}
+
+		vector<vector<int>> presums(n + 1, vector<int>(n + 1, 0));
+		for (int i = 1; i <= n; ++i)
+		{
+			for (int j = 1; j <= n; ++j)
 			{
-				if (ds.In_same_set(u, v))
+				presums[i][j] = presums[i - 1][j] + presums[i][j - 1] - presums[i - 1][j - 1] + as[i][j];
+			}
+		}
+
+		int ans = 0;
+		for (int i = 1; i <= n; ++i)
+		{
+			for (int j = 1; j <= n; ++j)
+			{
+				for (int x = 1; x <= i; ++x)
 				{
-					cout << "NO" << endl;
-					return;
+					for (int y = 1; y <= j; ++y)
+					{
+						int rangesum = presums[i][j] - presums[x - 1][j] - presums[i][y - 1] + presums[x - 1][y - 1];
+						ans = std::max(ans, rangesum);
+					}
 				}
 			}
 		}
-		cout << "YES" << endl;
+		cout << ans << endl;
 	}
 
 	// static 

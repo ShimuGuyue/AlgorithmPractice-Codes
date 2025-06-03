@@ -275,13 +275,6 @@ int64_t Ceil(int64_t a, int64_t b)
 	return a / b + (a % b != 0);
 }
 
-template<typename T>
-void Remove_same(std::vector<T> &v)
-{
-	std::sort(v.begin(), v.end());
-	v.erase(std::unique(v.begin(), v.end()), v.end());
-}
-
 #pragma endregion
 
 #pragma region Random
@@ -305,43 +298,38 @@ using MinHeap = std::priority_queue<T, std::vector<T>, std::greater<T>>;
 class ShimuGuyue
 {
 public:
-	static const bool MULTIPLE_TESTS = true;
+	static const bool MULTIPLE_TESTS = false;
 public:
 	static void Solve()
 	{
-		int n;
-		cin >> n;
-		vector<Edge> edges(n);
-		cin >> edges;
-		sort(edges.rbegin(), edges.rend());
-		vector<int> indexs;
-		for (auto [u, v, w] : edges)
+		int n, m;
+		cin >> n >> m;
+		vector<vector<int>> difs(n + 2, vector<int>(n + 2));
+		while (m--)
 		{
-			indexs.push_back(u);
-			indexs.push_back(v);
+			int x1, y1, x2, y2;
+			cin >>x1 >> y1 >> x2 >> y2;
+			++difs[x1][y1];
+			--difs[x2 + 1][y1];
+			--difs[x1][y2 + 1];
+			++difs[x2 + 1][y2 + 1];
 		}
-		Remove_same(indexs);
-		int m = indexs.size();
-		
-		DisjointSet ds(m + 1);
-		for (auto [u, v, w] : edges)
+		vector<vector<int>> grid(n + 1, vector<int>(n + 1));
+		for (int i = 1; i <= n; ++i)
 		{
-			u = std::lower_bound(indexs.begin(), indexs.end(), u) - indexs.begin();
-			v = std::lower_bound(indexs.begin(), indexs.end(), v) - indexs.begin();
-			if (w == 1)
+			for (int j = 1; j <= n; ++j)
 			{
-				ds.Merge_set(u, v);
-			}
-			else
-			{
-				if (ds.In_same_set(u, v))
-				{
-					cout << "NO" << endl;
-					return;
-				}
+				grid[i][j] = difs[i][j] + grid[i][j - 1] + grid[i - 1][j] - grid[i - 1][j - 1];
 			}
 		}
-		cout << "YES" << endl;
+		for (int i = 1; i <= n; ++i)
+		{
+			for (int j = 1; j <= n; ++j)
+			{
+				cout << grid[i][j] << " ";
+			}
+			cout << endl;
+		}
 	}
 
 	// static 
