@@ -6,7 +6,7 @@
 
 **洛谷 : [Shimu_Guyue](https://www.luogu.com.cn/user/1254437)**
 
-**AtCoder : [ShimuGuyue - AtCoder](https://atcoder.jp/users/ShimuGuyue)**
+**AtCoder : [ShimuGuyue](https://atcoder.jp/users/ShimuGuyue)**
 
 > 竞赛获奖记录：
 >
