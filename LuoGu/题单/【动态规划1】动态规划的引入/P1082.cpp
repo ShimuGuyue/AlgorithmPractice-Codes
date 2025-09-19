@@ -370,20 +370,20 @@ string no2  = "NO" ;
 #pragma region struct
 namespace hys_struct
 {
-struct Edge
+struct Triplet
 {
 	int u, v, w;
 
-	bool operator<(const Edge &o) const
+	bool operator<(const Triplet &o) const
 	{
 		return this->w < o.w;
 	}
-	bool operator>(const Edge &o) const
+	bool operator>(const Triplet &o) const
 	{
 		return this->w > o.w;
 	}
 
-	friend std::istream &operator>>(std::istream &in, Edge &e)
+	friend std::istream &operator>>(std::istream &in, Triplet &e)
 	{
 		in >> e.u >> e.v >> e.w;
 		return in;
@@ -1104,40 +1104,28 @@ public:
 // solution
 	void solve()
 	{
-		int n;
-		cin >> n;
-		vector<int> as(n + 1);
+		int n, x;
+		cin >> n >> x;
+		vector<array<int, 3>> peoples(n + 1);
 		for (int i = 1; i <= n; ++i)
 		{
-			cin >> as[i];
+			cin >> peoples[i];
 		}
 
-		vector<int> last(n + 1);
-		vector<int> dp(as);
-		for (int i = 1; i < n; ++i)
+		vector<vector<int>> dp(n + 1, vector<int>(x + 1));
+		for (int i = 1; i <= n; ++i)
 		{
-			for (int j = i + 1; j <= n; ++j)
+			auto [a, b, c] = peoples[i];
+			for (int j = 0; j <= x; ++j)
 			{
-				int connect;
-				cin >> connect;
-				if (connect == 0)
+				dp[i][j] = dp[i-1][j] + a;
+				if (j < c)
 					continue;
-				if (dp[i] + as[j] > dp[j])
-				{
-					dp[j] = dp[i] + as[j];
-					last[j] = i;
-				}
+				dp[i][j] = std::max(dp[i][j], dp[i-1][j-c] + b);
 			}
 		}
-
-		int index = max_element(dp.begin(), dp.end()) - dp.begin();
-		stack<int> locs;
-		for (int loc = index; loc != 0; loc = last[loc])
-		{
-			locs += loc;
-		}
-		cout << locs << endl;
-		cout << dp[index] << endl;
+		int64_t ans = *max_element(dp[n].begin(), dp[n].end());
+		cout << ans * 5 << endl;
 	}
 };
 #pragma endregion

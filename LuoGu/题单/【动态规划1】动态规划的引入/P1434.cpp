@@ -1104,40 +1104,46 @@ public:
 // solution
 	void solve()
 	{
-		int n;
-		cin >> n;
-		vector<int> as(n + 1);
-		for (int i = 1; i <= n; ++i)
-		{
-			cin >> as[i];
-		}
+		using Node = Edge;
 
-		vector<int> last(n + 1);
-		vector<int> dp(as);
-		for (int i = 1; i < n; ++i)
+		int n, m;
+		cin >> n >> m;
+		vector<vector<int>> grid(n, vector<int>(m));
+		maxHeap<Node> h;
+		for (int i = 0; i < n; ++i)
 		{
-			for (int j = i + 1; j <= n; ++j)
+			for (int j = 0; j < m; ++j)
 			{
-				int connect;
-				cin >> connect;
-				if (connect == 0)
-					continue;
-				if (dp[i] + as[j] > dp[j])
-				{
-					dp[j] = dp[i] + as[j];
-					last[j] = i;
-				}
+				cin >> grid[i][j];
+				h.push({i, j, grid[i][j]});
 			}
 		}
 
-		int index = max_element(dp.begin(), dp.end()) - dp.begin();
-		stack<int> locs;
-		for (int loc = index; loc != 0; loc = last[loc])
-		{
-			locs += loc;
+		vector<vector<int>> dp(n, vector<int>(m, 1));
+		while (!h.empty())
+		{	
+			auto [x, y, height] = h.top();
+			h.pop();
+			for (int i = 0; i < 4; ++i)
+			{
+				int xx = x + dxy[i][X];
+				int yy = y + dxy[i][Y];
+				if (xx < 0 || xx >= n)
+					continue;
+				if (yy < 0 || yy >= m)
+					continue;
+				if (grid[xx][yy] >= height)
+					continue;
+				dp[xx][yy] = std::max(dp[xx][yy], dp[x][y] + 1);
+			}
 		}
-		cout << locs << endl;
-		cout << dp[index] << endl;
+
+		int ans = 0;
+		for (auto &v : dp)
+		{
+			ans = std::max(ans, *max_element(v.begin(), v.end()));
+		}
+		cout << ans << endl;
 	}
 };
 #pragma endregion

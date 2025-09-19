@@ -1099,45 +1099,37 @@ public:
 // init
 	static constexpr bool MULTIPLE_TESTS{false};
 
+	static constexpr int mod = 1e9+7;
+
 	ShimuGuyue()
 	{}
 // solution
 	void solve()
 	{
-		int n;
-		cin >> n;
+		int n, m;
+		cin >> n >> m;
 		vector<int> as(n + 1);
 		for (int i = 1; i <= n; ++i)
 		{
 			cin >> as[i];
 		}
 
-		vector<int> last(n + 1);
-		vector<int> dp(as);
-		for (int i = 1; i < n; ++i)
+		vector<vector<int64_t>> dp(n + 1, vector<int64_t>(m + 1));
+		for (int i = 0; i <= n; ++i)
 		{
-			for (int j = i + 1; j <= n; ++j)
+			dp[i][0] = 1;
+		}
+		for (int i = 1; i <= n; ++i)
+		{
+			for (int j = 1; j <= m; ++j)
 			{
-				int connect;
-				cin >> connect;
-				if (connect == 0)
-					continue;
-				if (dp[i] + as[j] > dp[j])
-				{
-					dp[j] = dp[i] + as[j];
-					last[j] = i;
-				}
+				dp[i][j] += dp[i-1][j];
+				if (as[i] <= j)
+					dp[i][j] += dp[i][j-as[i]];
+				dp[i][j] %= mod;
 			}
 		}
-
-		int index = max_element(dp.begin(), dp.end()) - dp.begin();
-		stack<int> locs;
-		for (int loc = index; loc != 0; loc = last[loc])
-		{
-			locs += loc;
-		}
-		cout << locs << endl;
-		cout << dp[index] << endl;
+		cout << dp[n][m] << endl;
 	}
 };
 #pragma endregion

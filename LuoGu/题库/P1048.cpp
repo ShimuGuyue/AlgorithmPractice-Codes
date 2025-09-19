@@ -1104,40 +1104,28 @@ public:
 // solution
 	void solve()
 	{
-		int n;
-		cin >> n;
-		vector<int> as(n + 1);
-		for (int i = 1; i <= n; ++i)
+		int t, m;
+		cin >> t >> m;
+		vector<int> vs(m + 1);
+		vector<int> cs(m + 1);
+		for (int i = 1; i <= m; ++i)
 		{
-			cin >> as[i];
+			cin >> cs[i] >> vs[i];
 		}
 
-		vector<int> last(n + 1);
-		vector<int> dp(as);
-		for (int i = 1; i < n; ++i)
+		vector<vector<int>> dp(m + 1, vector<int>(t + 1));
+		for (int i = 1; i <= m; ++i)
 		{
-			for (int j = i + 1; j <= n; ++j)
+			for (int j = 1; j <= t; ++j)
 			{
-				int connect;
-				cin >> connect;
-				if (connect == 0)
-					continue;
-				if (dp[i] + as[j] > dp[j])
-				{
-					dp[j] = dp[i] + as[j];
-					last[j] = i;
-				}
+				dp[i][j] = dp[i-1][j];
+				if (j >= cs[i])
+					dp[i][j] = std::max(dp[i][j], dp[i-1][j-cs[i]] + vs[i]);
 			}
 		}
 
-		int index = max_element(dp.begin(), dp.end()) - dp.begin();
-		stack<int> locs;
-		for (int loc = index; loc != 0; loc = last[loc])
-		{
-			locs += loc;
-		}
-		cout << locs << endl;
-		cout << dp[index] << endl;
+		int ans = *max_element(dp[m].begin(), dp[m].end());
+		cout << ans << endl;
 	}
 };
 #pragma endregion
