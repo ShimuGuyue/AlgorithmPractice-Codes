@@ -168,7 +168,7 @@ void ioSpeedUp()
 
 
 
-#pragma region stlexpend
+#pragma region hys_stlexpend
 namespace hys_stlexpend
 {
 
@@ -294,36 +294,25 @@ std::ostream& operator<<(std::ostream &out, std::priority_queue<T> &h)
 
 //* std::vector
 template<typename T, typename K>
-void operator+=(std::vector<T> &v, const K &k)
+std::vector<T>& operator+=(std::vector<T> &v, const K &k)
 {
 	v.push_back(static_cast<T>(k));
+	return v;
 }
 template<typename T, typename K>
-void operator+=(std::vector<T> &vt, const std::vector<K> &vk)
+std::vector<T>& operator+=(std::vector<T> &vt, const std::vector<K> &vk)
 {
 	for (const K &k : vk)
 	{
 		vt.push_back(static_cast<T>(k));
 	}
+	return vt;
 }
 template<typename T>
-void operator++(std::vector<T> &v, int)
-{
-	v.emplace_back();
-}
-template<typename T>
-void operator--(std::vector<T> &v, int)
+std::vector<T>& operator--(std::vector<T> &v, int)
 {
 	v.pop_back();
-}
-template<typename T>
-void operator++(std::vector<T> &v)
-{
-	v.emplace_back();
-	for (size_t i = v.size() - 1; i > 0; --i)
-	{
-		std::swap(v[i], v[i - 1]);
-	}
+	return v;
 }
 
 //* std::queue
@@ -1352,27 +1341,64 @@ public:
 
 	void solve()
 	{
-		array<int, 4> ns;
-		cin >> ns;
-		int ans = 0;
-		for (int n : ns)
+		int n;
+		cin >> n;
+		vector<pair<int, int>> segs(n + 1);
+		for (int i = 1; i <= n; ++i)
 		{
-			vector<int> as(n);
-			cin >> as;
-			++as;
-			int sum = accumulate(as.begin(), as.end(), 0);
-			int m = sum / 2;
-			vector<int> dp(m + 1);
-			for (int i = 1; i <= n; ++i)
-			{
-				for (int j = m; j >= as[i]; --j)
-				{
-					dp[j] = std::max(dp[j], dp[j - as[i]] + as[i]);
-				}
-			}
-			ans += sum - dp[m];
+			cin >> segs[i].first >> segs[i].second;
 		}
-		cout << ans << endl;
+
+		vector<pair<int64_t, int64_t>> dp(n + 1);
+		dp[1] = {segs[1].second - 1 + segs[1].second - segs[1].first, segs[1].second - 1};
+		for (int i = 2; i <= n; ++i)
+		{
+			auto [l1, r1] = segs[i - 1];
+			auto [l2, r2] = segs[i];
+			int dis = r2 - l2;
+			if (l2 > r1)	// 完全在一侧
+			{
+				dp[i].second = 1 + std::min(dp[i-1].first  + abs(r2 - l1),
+											dp[i-1].second + abs(r2 - r1));
+				dp[i].first  = dp[i].second + dis;
+			}
+			else if (r2 < l1)
+			{
+				dp[i].first  = 1 + std::min(dp[i-1].first  + abs(l1 - l2),
+											dp[i-1].second + abs(r1 - l2));
+				dp[i].second = dp[i].first + dis;
+			}
+			else if (l1 >= l2 && r1 <= r2)	// 下包含上
+			{
+				dp[i].first  = 1 + dis + std::min(dp[i-1].first  + abs(r2 - l1),
+												  dp[i-1].second + abs(r2 - r1));
+				dp[i].second = 1 + dis + std::min(dp[i-1].first  + abs(l1 - l2),
+												  dp[i-1].second + abs(r1 - l2));
+			}
+			else if (l1 <= l2 && r1 >= r2)	// 上包含下
+			{
+				dp[i].first  = 1 + dis + std::min(dp[i-1].first  + abs(r2 - l1),
+												  dp[i-1].second + abs(r2 - r1));
+				dp[i].second = 1 + dis + std::min(dp[i-1].first  + abs(l1 - l2),
+												  dp[i-1].second + abs(r1 - l2));
+			}
+			else if (l1 >= l2 && r1 >= r2)	// 相交
+			{
+				dp[i].first  = 1 + dis + std::min(dp[i-1].first  + abs(r2 - l1),
+												  dp[i-1].second + abs(r2 - r1));
+				dp[i].second = 1 + dis + std::min(dp[i-1].first  + abs(l1 - l2),
+												  dp[i-1].second + abs(r1 - l2));
+			}
+			else if (r1 <= r2 && l1 <= r2)
+			{
+				dp[i].first  = 1 + dis + std::min(dp[i-1].first  + abs(r2 - l1),
+												  dp[i-1].second + abs(r2 - r1));
+				dp[i].second = 1 + dis + std::min(dp[i-1].first  + abs(l2 - l1),
+												  dp[i-1].second + abs(r1 - l2));
+			}
+		}
+		cout << std::min(dp[n].first  + n - segs[n].first,
+						 dp[n].second + n - segs[n].second) << endl;
 	}
 };
 #pragma endregion

@@ -168,7 +168,7 @@ void ioSpeedUp()
 
 
 
-#pragma region stlexpend
+#pragma region hys_stlexpend
 namespace hys_stlexpend
 {
 
@@ -294,36 +294,25 @@ std::ostream& operator<<(std::ostream &out, std::priority_queue<T> &h)
 
 //* std::vector
 template<typename T, typename K>
-void operator+=(std::vector<T> &v, const K &k)
+std::vector<T>& operator+=(std::vector<T> &v, const K &k)
 {
 	v.push_back(static_cast<T>(k));
+	return v;
 }
 template<typename T, typename K>
-void operator+=(std::vector<T> &vt, const std::vector<K> &vk)
+std::vector<T>& operator+=(std::vector<T> &vt, const std::vector<K> &vk)
 {
 	for (const K &k : vk)
 	{
 		vt.push_back(static_cast<T>(k));
 	}
+	return vt;
 }
 template<typename T>
-void operator++(std::vector<T> &v, int)
-{
-	v.emplace_back();
-}
-template<typename T>
-void operator--(std::vector<T> &v, int)
+std::vector<T>& operator--(std::vector<T> &v, int)
 {
 	v.pop_back();
-}
-template<typename T>
-void operator++(std::vector<T> &v)
-{
-	v.emplace_back();
-	for (size_t i = v.size() - 1; i > 0; --i)
-	{
-		std::swap(v[i], v[i - 1]);
-	}
+	return v;
 }
 
 //* std::queue
@@ -1352,27 +1341,28 @@ public:
 
 	void solve()
 	{
-		array<int, 4> ns;
-		cin >> ns;
-		int ans = 0;
-		for (int n : ns)
+		int n, m;
+		cin >> n >> m;
+		vector<int> as(n + 1);
+		for (int i = 1; i <= n; ++i)
 		{
-			vector<int> as(n);
-			cin >> as;
-			++as;
-			int sum = accumulate(as.begin(), as.end(), 0);
-			int m = sum / 2;
-			vector<int> dp(m + 1);
-			for (int i = 1; i <= n; ++i)
+			cin >> as[i];
+		}
+
+		vector<int> dp(m + 1);
+		dp[0] = 1;
+		for (int i = 1; i <= n; ++i)
+		{
+			for (int j = m; j > 0; --j)
 			{
-				for (int j = m; j >= as[i]; --j)
+				for (int k = 1; k <= std::min(j, as[i]); ++k)
 				{
-					dp[j] = std::max(dp[j], dp[j - as[i]] + as[i]);
+					dp[j] += dp[j - k];
+					dp[j] %= int(1e6+7);
 				}
 			}
-			ans += sum - dp[m];
 		}
-		cout << ans << endl;
+		cout << dp[m] << endl;
 	}
 };
 #pragma endregion

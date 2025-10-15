@@ -168,7 +168,7 @@ void ioSpeedUp()
 
 
 
-#pragma region stlexpend
+#pragma region hys_stlexpend
 namespace hys_stlexpend
 {
 
@@ -294,36 +294,25 @@ std::ostream& operator<<(std::ostream &out, std::priority_queue<T> &h)
 
 //* std::vector
 template<typename T, typename K>
-void operator+=(std::vector<T> &v, const K &k)
+std::vector<T>& operator+=(std::vector<T> &v, const K &k)
 {
 	v.push_back(static_cast<T>(k));
+	return v;
 }
 template<typename T, typename K>
-void operator+=(std::vector<T> &vt, const std::vector<K> &vk)
+std::vector<T>& operator+=(std::vector<T> &vt, const std::vector<K> &vk)
 {
 	for (const K &k : vk)
 	{
 		vt.push_back(static_cast<T>(k));
 	}
+	return vt;
 }
 template<typename T>
-void operator++(std::vector<T> &v, int)
-{
-	v.emplace_back();
-}
-template<typename T>
-void operator--(std::vector<T> &v, int)
+std::vector<T>& operator--(std::vector<T> &v, int)
 {
 	v.pop_back();
-}
-template<typename T>
-void operator++(std::vector<T> &v)
-{
-	v.emplace_back();
-	for (size_t i = v.size() - 1; i > 0; --i)
-	{
-		std::swap(v[i], v[i - 1]);
-	}
+	return v;
 }
 
 //* std::queue
@@ -361,29 +350,18 @@ std::stack<T>& operator--(std::stack<T> &k, int)
 #pragma region variable
 namespace hys_variable
 {
-constexpr int mod1 = 1000000007;
-constexpr int mod2 = 998244353;
-
 enum directions{X, Y};
 
-constexpr array<array<int, 2>, 9> dxy{array<int, 2>
-	{0, 0},
-	{-1, 0},
-	{0, -1},
-	{0, 1},
-	{1, 0},
-	{-1, -1},
-	{-1, 1},
-	{1, -1},
-	{1, 1}
+constexpr array<array<int, 2>, 8> dxy{
+	array<int, 2>{-1, 0}, {0, -1}, {0, 1}, {1, 0}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1}
 };
 
-const string yes  = "yes";
-const string yes1 = "Yes";
-const string yes2 = "YES";
-const string no   = "no" ;
-const string no1  = "No" ;
-const string no2  = "NO" ;
+string yes  = "yes";
+string yes1 = "Yes";
+string yes2 = "YES";
+string no   = "no" ;
+string no1  = "No" ;
+string no2  = "NO" ;
 }
 #pragma endregion
 
@@ -642,82 +620,6 @@ public:
 				else
 					++i;
 			}
-		}
-		return indexs;
-	}
-};
-
-class KMPAM
-{
-public:
-	struct Data
-	{
-		int fail{0};
-		array<int, 26> nexts{};
-	};
-
-	string pattern{};
-	vector<Data> automaton{};
-
-public:
-	KMPAM()
-	{}
-	KMPAM(string &s)
-	{
-		build(s);
-	}
-	
-public:
-	void build(string &s)
-	{
-		pattern = s;
-		int n = s.length();
-		automaton.assign(n + 1, {});
-		
-		for (int i = 1; i < n; ++i)
-		{
-			int fail = automaton[i - 1].fail;
-			while (fail > 0 && s[fail] != s[i])
-			{
-				fail = automaton[fail - 1].fail;
-			}
-			if (s[fail] == s[i])
-				++fail;
-			automaton[i].fail = fail;
-		}
-
-		for (int i = 0; i <= n; ++i)
-		{
-			for (int index = 0; index < 26; ++index)
-			{
-				if (i < n && index + 'a' == s[i])
-				{
-					automaton[i].nexts[index] = i + 1;
-				}
-				else
-				{
-					if (i == 0)
-						automaton[i].nexts[index] = 0;
-					else
-						automaton[i].nexts[index] = automaton[automaton[i - 1].fail].nexts[index];
-				}
-			}
-		}
-	}
-
-	vector<int> match(string &text)
-	{
-		int n = text.length();
-		int m = pattern.length();
-		
-		vector<int> indexs;
-		
-		int index = 0;
-		for (int i = 0; i < n; ++i)
-		{
-			index = automaton[index].nexts[text[i] - 'a'];
-			if (index == m)
-				indexs.push_back(i - m + 1);
 		}
 		return indexs;
 	}
@@ -985,97 +887,6 @@ public:
 		return accumulate(counts.begin(), counts.end(), 0);
 	}
 };
-
-class PAM
-{
-private:
-	struct Node
-	{
-		array<Node*, 26> nexts{};
-		Node* fail{nullptr};
-		int len{0};
-		int count_end{0};	// 在每个位置有多少个结束的回文串
-		int count{0};		// 当前回文串出现的次数
-	};
-
-	Node* root0{nullptr};
-	Node* root1{nullptr};
-
-	string pattern{};
-	Node* last{nullptr};
-
-public:
-	PAM() : root0{new Node}, root1{new Node}, last{root0}
-	{
-		root0->fail = root1;
-		root0->len =  0;
-		root1->fail = root1;
-		root1->len = -1;
-	}
-
-	~PAM()
-	{
-		queue<Node*> q;
-		q.push(root0);
-		q.push(root1);
-		while (!q.empty())
-		{
-			Node* u = q.front();
-			q.pop();
-			for (Node* v : u->nexts)
-			{
-				if (v != nullptr)
-					q.push(v);
-			}
-			delete u;
-		}
-	}
-
-public:
-	void add(string &s)
-	{
-		for (char c : s)
-		{
-			add(c);
-		}
-	}
-
-	void add(char c)
-	{
-		int loc = pattern.length();
-		int index = c - 'a';
-		pattern += c;
-		// 延 fail 链找到要转移的位置
-		while (loc - last->len - 1 < 0 || pattern[loc - last->len - 1] != c)
-		{
-			last = last->fail;
-		}
-		if (last->nexts[index] == nullptr)
-		{
-			Node* node = new Node;
-			node->len = last->len + 2;
-			last->nexts[index] = node;
-			// 找到位置之后设置 fail 指针
-			if (node->len == 1)
-			{
-				node->fail = root0;
-			}
-			else
-			{
-				Node* n = last->fail;
-				while (loc - n->len - 1 < 0 || pattern[loc - n->len - 1] != c)
-				{
-					n = n->fail;
-				}
-				node->fail = n->nexts[index];
-			}
-			node->count_end = node->fail->count_end + 1;
-		}
-		// 更新模式串最后一个位置对应的树上节点
-		last = last->nexts[index];
-		++last->count;
-	}
-};
 }
 #pragma endregion
 
@@ -1157,53 +968,6 @@ pair<vector<int>, vector<bool>> primeSieve(const int n)
 	}
 	return {primes, isprime};
 }
-
-vector<int> manacher(string &s)
-{
-	int n = s.size();
-	int l = -1, r = -1, p = -1;
-	vector<int> lens(n);
-	for (int i = 0; i < n; ++i)
-	{
-		if (i > r)
-		{
-			for (int len = 0; i >= len && i + len < n; ++len)
-			{// 枚举的 len 为不包括中心点的拓展长度
-				if (s[i - len] != s[i + len])
-					break;
-				lens[i] = len + 1;
-			}
-			l = i - lens[i] + 1;
-			r = i + lens[i] - 1;
-			p = i;
-		}
-		else
-		{
-			int j = 2 * p - i;
-			if (j - (lens[j] - 1) > l)
-			{// 完全在范围内直接对称
-				lens[i] = lens[j];
-			}
-			else
-			{// 不完全在范围内从已知安全长度开始拓展
-				lens[i] = r - i + 1;
-				for (int len = lens[i]; i >= len && i + len < n; ++len)
-				{
-					if (s[i - len] != s[i + len])
-						break;
-					lens[i] = len + 1;
-				}
-				if (i + lens[i] - 1 > r)
-				{
-					l = i - lens[i] + 1;
-					r = i + lens[i] - 1;
-					p = i;
-				}
-			}
-		}
-	}
-	return lens;
-}
 }
 #pragma endregion
 
@@ -1243,8 +1007,6 @@ using namespace hys::hys_fasterio;
 // using hys::hys_stlexpend::operator+=;
 // using hys::hys_stlexpend::operator--;
 using namespace hys::hys_stlexpend;
-// using hys::hys_variable::mod1;
-// using hys::hys_variable::mod2;
 // using hys::hys_variable::directions::X;
 // using hys::hys_variable::directions::Y;
 // using hys::hys_variable::dxy;
@@ -1260,17 +1022,14 @@ using namespace hys::hys_variable;
 // using hys::hys_struct::DisjointSet;
 // using hys::hys_struct::StringHash;
 // using hys::hys_struct::KMP;
-// using hys::hys_struct::KMPAM;
 // using hys::hys_struct::Trie;
 // using hys::hys_struct::ACAM;
-// using hys::hys_struct::PAM;
 using namespace hys::hys_struct;
 // using hys::hys_function::quickPow;
 // using hys::hys_function::exgcd;
 // using hys::hys_function::inv;
 // using hys::hys_function::ceilDiv;
 // using hys::hys_function::primeSieve;
-// using hys::hys_function::manacher;
 using namespace hys::hys_function;
 // using hys::hys_nickname::maxHeap;
 // using hys::hys_nickname::minHeap;
@@ -1281,52 +1040,45 @@ using namespace hys::hys_rand;
 
 
 
-#pragma region local_debug
+#pragma region debug
+
+
+
 #ifdef SHIMUGUYUE
 
 
 
-void fileIO()
+template<typename T>
+void debugPrint(const T& arg) 
 {
-	freopen(".test/test.in" , "r", stdin );
-	freopen(".test/test.out", "w", stdout);
+    std::cout << arg;
+}
+template<typename First, typename... Rest>
+void debugPrint(const First& first, const Rest&... rest) 
+{
+    std::cout << first << ' ';
+    debugPrint(rest...);
 }
 
-template<typename... Args>
-void debugPrint(const Args&... args)
+template<typename First, typename... Rest>
+void debug(const First& first, const Rest&... rest) 
 {
 	std::cout << '[';
-	std::string separator = "";
-	((std::cout << separator << args, separator = " "), ...);
+    debugPrint(first, rest...);
 	std::cout << ']';
 }
-template<typename... Args>
-void debug(const Args&... args) 
+template<typename First, typename... Rest>
+void debug_(const First& first, const Rest&... rest) 
 {
-    debugPrint(args...);
-}
-template<typename... Args>
-void debug_(const Args&... args) 
-{
-	((debug(args)), ...);
+    debug(first, rest...);
 	std::cout << '\n';
 }
 
 
 
 #else
-void fileIO()
-{}
-
-template<typename... Args>
-void debugPrint(const Args&... args)
-{}
-template<typename First, typename... Rest>
-void debug(const First& first, const Rest&... rest)
-{}
-template<typename First, typename... Rest>
-void debug_(const First& first, const Rest&... rest)
-{}
+	#define debug
+	#define debug_
 #endif
 
 
@@ -1345,33 +1097,72 @@ class ShimuGuyue
 {
 public:
 // init
+	static constexpr bool MULTIPLE_TESTS{false};
+
 	ShimuGuyue()
 	{}
 // solution
-	static constexpr bool MULTIPLE_TESTS{false};
+	struct Item
+	{
+		int cost;
+		int value;
+		int parent;
+		vector<int> childs;
+	};
 
 	void solve()
 	{
-		array<int, 4> ns;
-		cin >> ns;
-		int ans = 0;
-		for (int n : ns)
+		int n, m;
+		cin >> n >> m;
+
+		vector<Item> items(m + 1);
+		for (int i = 1; i <= m; ++i)
 		{
-			vector<int> as(n);
-			cin >> as;
-			++as;
-			int sum = accumulate(as.begin(), as.end(), 0);
-			int m = sum / 2;
-			vector<int> dp(m + 1);
-			for (int i = 1; i <= n; ++i)
+			cin >> items[i].cost >> items[i].value >> items[i].parent;
+			items[i].value *= items[i].cost;
+
+			if (items[i].parent != 0)
+				items[items[i].parent].childs += i;
+		}
+
+		int last = 0;
+		vector<vector<int64_t>> dp(m + 1, vector<int64_t>(n + 1));
+		for (int i = 1; i <= m; ++i)
+		{
+			if (items[i].parent != 0)
+				continue;
+			for (int j = 1; j <= n; ++j)
 			{
-				for (int j = m; j >= as[i]; --j)
+				dp[i][j] = dp[last][j];
+				int a, b, c;
+				if (j - items[i].cost >= 0)
 				{
-					dp[j] = std::max(dp[j], dp[j - as[i]] + as[i]);
+					a = i;
+					dp[i][j] = std::max(dp[i][j], dp[last][j - items[a].cost] + items[a].value);
+				}
+				if (items[i].childs.size() >= 1 && j - items[i].cost - items[items[i].childs[0]].cost >= 0)
+				{
+					a = i;
+					b = items[i].childs[0];
+					dp[i][j] = std::max(dp[i][j], dp[last][j - items[a].cost - items[b].cost] + items[a].value + items[b].value);
+				}
+				if (items[i].childs.size() >= 2 && j - items[i].cost - items[items[i].childs[1]].cost >= 0)
+				{
+					a = i;
+					c = items[i].childs[1];
+					dp[i][j] = std::max(dp[i][j], dp[last][j - items[a].cost - items[c].cost] + items[a].value + items[c].value);
+				}
+				if (items[i].childs.size() >= 2 && j - items[i].cost - items[items[i].childs[0]].cost - items[items[i].childs[1]].cost >= 0)
+				{
+					a = i;
+					b = items[i].childs[0];
+					c = items[i].childs[1];
+					dp[i][j] = std::max(dp[i][j], dp[last][j - items[a].cost - items[b].cost - items[c].cost] + items[a].value + items[b].value + items[c].value);
 				}
 			}
-			ans += sum - dp[m];
+			last = i;
 		}
+		int64_t ans = dp[last][n];
 		cout << ans << endl;
 	}
 };
@@ -1381,17 +1172,21 @@ public:
 /*-----------------------------------main-----------------------------------*/
 int main()
 {
-	fileIO();
+	#ifdef SHIMUGUYUE
+	freopen(".test/test.in" , "r", stdin );
+	freopen(".test/test.out", "w", stdout);
+	#endif
     ioSpeedUp();
 
 	ShimuGuyue shimuguyue;
 	int t = 1;
 	if (ShimuGuyue::MULTIPLE_TESTS)
-		std::cin >> t;
+		cin >> t;
 	while (t--)
 	{
 		shimuguyue.solve();
 		debug_("________________________");
 	}
+	return 0;
 }
 #pragma endregion
