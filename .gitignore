@@ -1,7 +1,6 @@
 
 .test/
 .vscode/
-*/*.cpp
 **/*.ini
 **/*.ico
 *.code-workspace
