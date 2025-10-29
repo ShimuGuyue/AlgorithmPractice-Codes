@@ -668,29 +668,51 @@ public:
 	{}
 	static constexpr bool MULTIPLE_TESTS{false};
 // solution
+	struct Cow
+	{
+		int x, y;
+	};
+	
 	void solve()
 	{
+		constexpr int m = 400 * 1000;
+
 		int n;
 		std::cin >> n;
-		std::vector<int> as(n);
-		std::cin >> as;
-		
-		std::vector<int> dp(30);
-		for (int a : as)
+		std::vector<Cow> cows(n);
+		for (auto &[x, y] : cows)
 		{
-			int max = 0;
-			for (int i = 0; i < 30; ++i)
+			std::cin >> x >> y;
+		}
+		++cows;
+
+		int ans = 0;
+		std::vector<int> temp(m * 2 + 1, -1e9);
+		auto dp = temp.begin() + m;
+		dp[0] = 0;
+		for (int i = 1; i <= n; ++i)
+		{
+			auto [x, y] = cows[i];
+			if (x >= 0)
 			{
-				if (a & (1 << i))
-					max = std::max(max, dp[i] + 1);
+				for (int j = m; j >= -m + x; --j)
+				{
+					dp[j] = std::max(dp[j], dp[j - x] + y);
+				}
 			}
-			for (int i = 0; i < 30; ++i)
+			else
 			{
-				if (a & (1 << i))
-					dp[i] = std::max(dp[i], max);
+				for (int j = -m; j <= m + x; ++j)
+				{
+					dp[j] = std::max(dp[j], dp[j - x] + y);
+				}
 			}
 		}
-		int ans = *std::max_element(dp.begin(), dp.end());
+		for (int i = 0; i <= m; ++i)
+		{
+			if (dp[i] >= 0)
+				ans = std::max(ans, i + dp[i]);
+		}
 		std::cout << ans << endl;
 	}
 };

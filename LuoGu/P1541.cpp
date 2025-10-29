@@ -119,10 +119,8 @@ std::iota
 std::accumulate | std::partial_sum
 */
 #include <cstdint>
-/*
-std::int8_t | std::int16_t | std::int32_t | std::int64_t
-std::uint8_t | std::uint16_t | std::uint32_t | std::uint64_t
-*/
+using std::int8_t, std::int16_t, std::int32_t, std::int64_t;
+using std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t;
 #include <climits>
 #include <cmath>
 /*
@@ -670,28 +668,58 @@ public:
 // solution
 	void solve()
 	{
-		int n;
-		std::cin >> n;
+		int n, m;
+		std::cin >> n >> m;
 		std::vector<int> as(n);
 		std::cin >> as;
-		
-		std::vector<int> dp(30);
-		for (int a : as)
+
+		std::array<int, 4> cards{};
+		while (m--)
 		{
-			int max = 0;
-			for (int i = 0; i < 30; ++i)
+			int b;
+			std::cin >> b;
+			++cards[b - 1];
+		}
+		auto [a, b, c, d] = cards;
+
+		std::vector<std::vector<std::vector<std::vector<int>>>> dp(a + 1,
+					std::vector<std::vector<std::vector<int>>>	  (b + 1,
+								std::vector<std::vector<int>>	  (c + 1,
+											std::vector<int>	  (d + 1))));
+		dp[0][0][0][0] = as[0];
+		for (int i = 0; i <= a; ++i)
+		{
+			for (int j = 0; j <= b; ++j)
 			{
-				if (a & (1 << i))
-					max = std::max(max, dp[i] + 1);
-			}
-			for (int i = 0; i < 30; ++i)
-			{
-				if (a & (1 << i))
-					dp[i] = std::max(dp[i], max);
+				for (int k = 0; k <= c; ++k)
+				{
+					for (int l = 0; l <= d; ++l)
+					{
+						if (i != 0)
+							dp[i][j][k][l] = std::max(
+								dp[i][j][k][l],
+								dp[i - 1][j][k][l] + as[i * 1 + j * 2 + k * 3 + l * 4]
+							);
+						if (j != 0)
+							dp[i][j][k][l] = std::max(
+								dp[i][j][k][l],
+								dp[i][j - 1][k][l] + as[i * 1 + j * 2 + k * 3 + l * 4]
+							);
+						if (k != 0)
+							dp[i][j][k][l] = std::max(
+								dp[i][j][k][l],
+								dp[i][j][k - 1][l] + as[i * 1 + j * 2 + k * 3 + l * 4]
+							);
+						if (l != 0)
+							dp[i][j][k][l] = std::max(
+								dp[i][j][k][l],
+								dp[i][j][k][l - 1] + as[i * 1 + j * 2 + k * 3 + l * 4]
+							);
+					}
+				}
 			}
 		}
-		int ans = *std::max_element(dp.begin(), dp.end());
-		std::cout << ans << endl;
+		std::cout << dp[a][b][c][d] << std::endl;
 	}
 };
 #pragma endregion

@@ -119,10 +119,8 @@ std::iota
 std::accumulate | std::partial_sum
 */
 #include <cstdint>
-/*
-std::int8_t | std::int16_t | std::int32_t | std::int64_t
-std::uint8_t | std::uint16_t | std::uint32_t | std::uint64_t
-*/
+using std::int8_t, std::int16_t, std::int32_t, std::int64_t;
+using std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t;
 #include <climits>
 #include <cmath>
 /*
@@ -674,24 +672,32 @@ public:
 		std::cin >> n;
 		std::vector<int> as(n);
 		std::cin >> as;
-		
-		std::vector<int> dp(30);
-		for (int a : as)
+		++as;
+
+		constexpr int m = 40 + 18;
+
+		std::vector<std::vector<int>> dp(n + 1, std::vector<int>(m + 1));
+		for (int i = 1; i <= n; ++i)
 		{
-			int max = 0;
-			for (int i = 0; i < 30; ++i)
+			dp[i][as[i]] = i;
+		}
+		int ans = *std::max_element(as.begin(), as.end());
+		for (int i = 2; i <= m; ++i)
+		{
+			for (int l = 1; l <= n; ++l)
 			{
-				if (a & (1 << i))
-					max = std::max(max, dp[i] + 1);
-			}
-			for (int i = 0; i < 30; ++i)
-			{
-				if (a & (1 << i))
-					dp[i] = std::max(dp[i], max);
+				if (!dp[l][i - 1])
+					continue;
+				int r = dp[l][i - 1] + 1;
+				if (r > n)
+					continue;
+				if (!dp[r][i - 1])
+					continue;
+				dp[l][i] = dp[r][i - 1];
+				ans = std::max(ans, i);
 			}
 		}
-		int ans = *std::max_element(dp.begin(), dp.end());
-		std::cout << ans << endl;
+		std::cout << ans << std::endl;
 	}
 };
 #pragma endregion
